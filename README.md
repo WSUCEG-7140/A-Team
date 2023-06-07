@@ -1,2 +1,2 @@
-# Team-E
-This is Team-E's repository.
+# A-Team
+This is A-Team's repository.
