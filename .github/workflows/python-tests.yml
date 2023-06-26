@@ -1,0 +1,45 @@
+# This workflow configuration sets up the environment, installs Python dependencies, runs pytest, and uploads the test results as an artifact.
+
+name: Python Tests
+
+on:
+  # Trigger the workflow whenever a pull request is opened or updated
+  pull_request:
+    branches: [ "*" ]
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        # GitHub Actions will create separate jobs for each combination of operating system and specified Python version.
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+        python-version: [3.9]
+    # Run the job on the specified operating system
+    runs-on: ${{ matrix.os }}
+
+    # runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      # Use the actions/setup-python action to set up the specified Python version
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      # Install Python dependencies specified in requirements.txt
+      run: pip install -r requirements.txt
+
+    - name: Run tests
+      # Run pytest to execute tests
+      run: pytest
+
+    - name: Upload test results
+      # Upload the test results as an artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: Test Results
+        path: pytest.xml
+
