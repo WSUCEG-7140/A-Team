@@ -3,6 +3,10 @@
 name: Tests
 
 on:
+  # Trigger the workflow on push in any branch
+  push:
+    branches: [ "*" ]
+
   # Trigger the workflow whenever a pull request is opened or updated
   pull_request:
     branches: [ "*" ]
@@ -28,8 +32,10 @@ jobs:
 
     - name: Install dependencies
       run: |
+        pip install --upgrade pip
         pip install pytest==7.3.2 
         pip install pytest-cov
+        pip install pytest-html
 
     - name: Run tests
       # Run pytest to execute tests and generate test results and coverage report
