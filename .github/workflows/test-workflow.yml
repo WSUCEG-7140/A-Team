@@ -3,10 +3,6 @@
 name: Tests
 
 on:
-  # Trigger the workflow on push in any branch
-  push:
-    branches: [ "*" ]
-
   # Trigger the workflow whenever a pull request is opened or updated
   pull_request:
     branches: [ "*" ]
@@ -39,7 +35,7 @@ jobs:
 
     - name: Run tests
       # Run pytest to execute tests and generate test results and coverage report
-      run: pytest --junitxml=testResults.xml --html=test-results.html --cov-report html:cov-report --cov=${{github.workspace}}/Backend tests/
+      run: pytest --junitxml=testResults.xml --html=test-results.html --cov-report html:cov-report --cov=${{github.workspace}}/Backend
 
     - name: Upload test results in XML format
       # Upload the XML test results as an artifact
