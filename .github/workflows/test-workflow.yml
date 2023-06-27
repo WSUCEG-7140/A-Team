@@ -28,22 +28,26 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install pytest==7.3.2
+        pip install --upgrade pip
+        pip install pytest==7.3.2 
+        pip install pytest-cov
+        pip install pytest-html
 
     - name: Run tests
-      # Run pytest to execute tests
-      run: pytest
-
-    - name: Upload test results in XML format
-      # Upload the test results as an artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: Test Results XML
-        path: testResults.xml
+      # Run pytest to execute tests and generate test results and coverage report
+      run: pytest --html=test-results.html --cov-report html:cov-report --cov=${{github.workspace}}/Backend
         
     - name: Upload test results in HTML format
+      # Upload the HTML test results as an artifact
       uses: actions/upload-artifact@v2
       with:
         name: Test Results HTML
         path: test-results.html
+
+    - name: Upload coverage report
+      # Upload the coverage report as an artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: Coverage Report
+        path: cov-report/
 
