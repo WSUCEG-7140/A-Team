@@ -31,6 +31,7 @@ jobs:
         fi
 
     - name: Generate Documentation
+      shell: bash
       run: doxygen Doxyfile
 
     - name: Upload Documentation
