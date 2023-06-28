@@ -25,6 +25,7 @@ jobs:
           sudo apt-get install -y doxygen
         elif [[ "${{ matrix.os }}" == "macOS-latest" ]]; then
           brew install doxygen
+          export HOMEBREW_NO_INSTALL_CLEANUP=1
         elif [[ "${{ matrix.os }}" == "windows-latest" ]]; then
           choco install doxygen -y
         fi
