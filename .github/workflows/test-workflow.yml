@@ -1,6 +1,6 @@
-# This workflow configuration sets up the environment, installs Python dependencies, runs pytest, and uploads the test results as an artifact.
+# This workflow configuration sets up the environment, installs Python dependencies, runs pytest, generates the documentation using doxygen and uploads the test results, documentation as artifacts.
 
-name: Tests
+name: Tests and Documentation
 
 on:
   # Trigger the workflow whenever a pull request is opened or updated
@@ -50,4 +50,32 @@ jobs:
       with:
         name: Coverage Report
         path: cov-report/
-
+    - name: Install Doxygen (Ubuntu)
+      # Install Doxygen on Ubuntu
+      if: matrix.os == 'ubuntu-latest'
+      run: sudo apt-get install -y doxygen
+          
+    - name: Install Doxygen (macOS)
+      # Install Doxygen on macOS
+      if: matrix.os == 'macOS-latest'
+      run: |
+        brew install doxygen
+        export HOMEBREW_NO_INSTALL_CLEANUP=1
+        export HOMEBREW_NO_ENV_HINTS=1
+            
+    - name: Install Doxygen (Windows)
+      # Install Doxygen on Windows
+      if: matrix.os == 'windows-latest'
+      run: choco install doxygen.install --yes --no-progress
+    
+    
+    - name: Generate Documentation
+      # Generate the documentation using doxygen
+      run: doxygen Doxyfile
+    
+    - name: Upload Documentation
+      # Upload the documentation as an artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: Documentation
+        path: html/
