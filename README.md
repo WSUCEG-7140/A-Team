@@ -21,6 +21,7 @@ To run the Grocery Store Management System locally, follow these steps:
 3.	Set up the MySQL database:
 -	Install MySQL if you haven't already.
 -	Import database script in your local machine
+-	Locate the sql_connection.py file and modify the user, password and database fields to match your own credentials.
 
 4.	Run App:
 Back-end (Python):
