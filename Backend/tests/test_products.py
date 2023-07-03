@@ -1,7 +1,11 @@
 import unittest
-from unittest.mock import MagicMock, patch
-from ..sql_connection import SQLConnection
-from ..products import Products
+from unittest.mock import MagicMock
+import sys
+import os
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.append(parent_dir)
+from backend.products import Products
+
 
 class TestProducts(unittest.TestCase):
     def setUp(self):
