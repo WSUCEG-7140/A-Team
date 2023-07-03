@@ -1,8 +1,6 @@
 import unittest
 from unittest.mock import MagicMock, patch
-import sys
-sys.path.append("..")
-from sql_connection import SQLConnection
+from ..sql_connection import SQLConnection
 from products import Products
 
 class TestProducts(unittest.TestCase):

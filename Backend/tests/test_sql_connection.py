@@ -1,9 +1,7 @@
 import unittest
 from unittest import mock
 import mysql.connector
-import sys
-sys.path.append("..")
-from sql_connection import SQLConnection
+from ..sql_connection import SQLConnection
 
 class TestSQLConnection(unittest.TestCase):
     def setUp(self):
