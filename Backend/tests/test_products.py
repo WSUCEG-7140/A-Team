@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import MagicMock, patch
 from ..sql_connection import SQLConnection
-from products import Products
+from ..products import Products
 
 class TestProducts(unittest.TestCase):
     def setUp(self):
