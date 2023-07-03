@@ -36,7 +36,7 @@ jobs:
 
     - name: Run tests
       # Run pytest to execute tests and generate test results and coverage report
-      run: pytest --html=test-results.html --cov-report html:cov-report --cov=${{github.workspace}}/backend
+      run: pytest --html=test-results.html --cov-report html:cov-report --cov=${{github.workspace}}/Backend
         
     - name: Upload test results in HTML format
       # Upload the HTML test results as an artifact

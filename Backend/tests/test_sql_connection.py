@@ -5,7 +5,7 @@ import sys
 import os
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(parent_dir)
-from backend.sql_connection import SQLConnection
+from Backend.sql_connection import SQLConnection
 
 class TestSQLConnection(unittest.TestCase):
     def setUp(self):
