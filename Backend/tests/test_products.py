@@ -64,6 +64,35 @@ class TestProducts(unittest.TestCase):
             "products.unit_of_measure_id=unit_of_measures.unit_of_measure_id"
         )
 
+    def test_insert_new_product(self):
+        """
+        Test the insert_new_product() method of Products.
+
+        This test case verifies that the insert_new_product() method correctly inserts a new product
+        into the database and returns the ID of the inserted product.
+        """
+
+        # Set up the mock cursor and its execute method
+        self.mock_cursor.lastrowid = 1
+
+        # Call the method under test
+        result = self.products.insert_new_product({
+            'name': 'mango',
+            'unit_of_measure_id': '1',
+            'price_per_unit': 10
+        })
+
+        # Assert the expected result
+        self.assertEqual(result, 1)
+
+        # Assert that the cursor, execute, and commit methods were called
+        self.mock_connection.cursor.assert_called_once()
+        self.mock_cursor.execute.assert_called_once_with(
+            "INSERT INTO products (name, unit_of_measure_id, price_per_unit)VALUES (%s, %s, %s)",
+            ('mango', '1', 10)
+        )
+        self.mock_connection.commit.assert_called_once()
+
 
 
 
