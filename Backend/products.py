@@ -1,4 +1,4 @@
-from sql_connection import SQLConnection
+#from sql_connection import SQLConnection
 #from contracts import contract, pre, post
 
 class Products:
@@ -69,20 +69,20 @@ class Products:
         # Return the last inserted row ID
         return cursor.lastrowid
 
-def main():
-    connection = SQLConnection()
-    connection = connection.connect()
+# def main():
+#     connection = SQLConnection()
+#     connection = connection.connect()
 
-    products = Products(connection)
-    products.get_all_products()
-    products.insert_new_product({
-        'name': 'potatoes',
-        'unit_of_measure_id': '1',
-        'price_per_unit': 10
-    })
+#     products = Products(connection)
+#     products.get_all_products()
+#     products.insert_new_product({
+#         'name': 'potatoes',
+#         'unit_of_measure_id': '1',
+#         'price_per_unit': 10
+#     })
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
 
 
 

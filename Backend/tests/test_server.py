@@ -9,6 +9,7 @@ parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(parent_dir)
 from Backend.server import Server
 from Backend.products import Products
+from Backend.orders import Orders
 
 # Define a test case class derived from unittest.TestCase
 class ServerTestCase(unittest.TestCase):
@@ -22,6 +23,7 @@ class ServerTestCase(unittest.TestCase):
         self.mock_connection = MagicMock()
         self.mock_connection.cursor.return_value = self.mock_cursor
         self.products = Products(self.mock_connection)
+        self.orders = Orders(self.mock_connection)
         self.server.app = self.app
         self.client = self.app.test_client()
     
@@ -60,6 +62,8 @@ class ServerTestCase(unittest.TestCase):
         self.assertIn('/getProducts', routes)
         # Asserting that the '/insertProduct' route is present in the 'routes' list.
         self.assertIn('/insertProduct', routes)
+        # Asserting that the '/getOrders' route is present in the 'routes' list.
+        self.assertIn('/getOrders', routes)
 
     def test_get_all_products(self):
         """
@@ -106,10 +110,16 @@ class ServerTestCase(unittest.TestCase):
                 self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
 
 
-
-
-
-
-
-
+    def test_get_all_orders(self):
+        # Mock the response from the orders.get_all_orders method
+        mock_response = [{'order_id': 1, 'customer_name': 'Customer 1'}, {'order_id': 2, 'customer_name': 'Customer 2'}]
+        self.server.orders.get_all_orders = MagicMock(return_value=mock_response)
         
+        # Execute the route function
+        with self.server.app.test_request_context('/getOrders', method='GET'):
+            response = self.server.get_all_orders()
+            
+            # Assert that the response is correct
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.get_json(), mock_response)
+            self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
