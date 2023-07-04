@@ -33,6 +33,7 @@ jobs:
         pip install pytest-cov
         pip install pytest-html
         pip install mysql-connector-python
+        pip install flask
 
     - name: Run tests
       # Run pytest to execute tests and generate test results and coverage report
