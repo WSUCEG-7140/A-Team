@@ -67,6 +67,22 @@ class Server:
         response = jsonify(response)  # Converts the response to a JSON object
         response.headers.add('Access-Control-Allow-Origin', '*')  # Adds a header to allow cross-origin requests
         return response
+    
+    #@contract
+    #@post(lambda result: isinstance(result, Flask.Response), "The return value must be a Flask Response object.")
+    def insert_new_order(self):
+        """
+        Inserts a new order into the database.
+
+        Returns:
+            Flask Response: JSON response containing the inserted order ID.
+        """
+        request_payload = json.loads(request.form['data'])  # Parses the request payload as JSON
+        order_id = self.orders.insert_new_order(request_payload) # Inserts the new order into the database
+        response = jsonify({'order_id': order_id})  # Creates a JSON response with the inserted order ID
+        response.headers.add('Access-Control-Allow-Origin', '*')  # Adds a header to allow cross-origin requests
+        return response
+
 
     def setup_routes(self):
         """
@@ -75,6 +91,7 @@ class Server:
         self.app.route('/getProducts', methods=['GET'])(self.get_all_products)   # Sets up a route for getting all products
         self.app.route('/insertProduct', methods=['POST'])(self.insert_new_product)  # Sets up a route for inserting a new product
         self.app.route('/getOrders', methods=['GET'])(self.get_all_orders)   # Sets up a route for getting all orders
+        self.app.route('/insertOrder', methods=['POST'])(self.insert_new_order)  # Sets up a route for inserting a new order
 
 if __name__ == '__main__':
     app = Server()   # Creates an instance of the Server class

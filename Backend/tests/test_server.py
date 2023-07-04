@@ -64,6 +64,8 @@ class ServerTestCase(unittest.TestCase):
         self.assertIn('/insertProduct', routes)
         # Asserting that the '/getOrders' route is present in the 'routes' list.
         self.assertIn('/getOrders', routes)
+        # Asserting that the '/insertOrder' route is present in the 'routes' list.
+        self.assertIn('/insertOrder', routes)
 
     def test_get_all_products(self):
         """
@@ -123,3 +125,33 @@ class ServerTestCase(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             self.assertEqual(response.get_json(), mock_response)
             self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
+
+    def test_insert_new_order(self):
+        """
+        Test the insert_new_order() method of the server.
+
+        @returns: None
+        """
+        # Mock the request payload
+        mock_payload = {
+            'customer_name': 'John Doe',
+            'total_amount': 100.0,
+            'order_details': [
+                {'product_id': 1, 'quantity': 2, 'total_price': 20.0},
+                {'product_id': 2, 'quantity': 3, 'total_price': 30.0}
+            ]
+        }
+        mock_request = mock.MagicMock(form={'data': json.dumps(mock_payload)})
+        with mock.patch('flask.request', mock_request):
+            # Mock the response from the orders.insert_new_order method
+            mock_order_id = 1
+            self.server.orders.insert_new_order = mock.MagicMock(return_value=mock_order_id)
+
+            # Execute the route function
+            with self.server.app.test_request_context('/insertOrder', method='POST', data={'data': json.dumps(mock_payload)}):
+                response = self.server.insert_new_order()
+
+                # Assert that the response is correct
+                self.assertEqual(response.status_code, 200)
+                self.assertEqual(response.get_json(), {'order_id': mock_order_id})
+                self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')

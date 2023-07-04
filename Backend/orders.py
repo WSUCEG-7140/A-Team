@@ -39,3 +39,71 @@ class Orders:
             })
         # Return the response list
         return response
+    
+    #@contract
+    #@pre(lambda order: isinstance(order, dict))
+    #@post(lambda result: isinstance(result, int))
+    def insert_new_order(self, order):
+        """
+        Inserts a new order into the database.
+
+        @param order: A dictionary representing the order details.
+        @return: The ID of the newly inserted order.
+        """
+
+        # Create a cursor object to execute SQL queries
+        cursor = self.connection.cursor()
+        # SQL query to insert data into the 'orders' table
+        query = ("INSERT INTO orders "
+                 "(customer_name, total_amount, datetime)"
+                 "VALUES (%s, %s, %s)")
+        # Data to be inserted into the table
+        data = (order['customer_name'], order['total_amount'], datetime.now())
+
+        # Execute the SQL query with the provided data
+        cursor.execute(query, data)
+        order_id = cursor.lastrowid
+        order_details_query = ("INSERT INTO order_details "
+                           "(order_id, product_id, quantity, total_price)"
+                           "VALUES (%s, %s, %s, %s)")
+        
+        # Initialize an empty list to store the order details data.
+        order_details_data = []
+        # Iterate over each order detail record in the 'order' object.
+        for order_detail_record in order['order_details']:
+            # Extract relevant information from the order detail record and append it to the 'order_details_data' list.
+            order_details_data.append([
+            order_id,
+            int(order_detail_record['product_id']),
+            float(order_detail_record['quantity']),
+            float(order_detail_record['total_price'])
+        ])
+        # Execute the SQL query 'order_details_query' using the 'cursor' object's 'executemany' method.
+        cursor.executemany(order_details_query, order_details_data)
+        # Commit the changes to the database
+        self.connection.commit()
+        # Return the last inserted row ID
+        #return order_id
+        return cursor.lastrowid
+
+# def main():
+#     """
+#     Entry point of the program.
+#     """
+#     connection = SQLConnection()
+#     connection = connection.connect()
+
+#     orders = Orders(connection)
+#     orders.get_all_orders()
+
+# if __name__ == '__main__':
+#     main()
+
+
+
+
+
+
+
+
+    
