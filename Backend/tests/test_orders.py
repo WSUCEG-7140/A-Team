@@ -43,4 +43,30 @@ class OrdersTestCase(unittest.TestCase):
         ]
         self.assertEqual(result, expected_response)
 
+    def test_insert_new_order(self):
+        """
+        Test case for the 'insert_new_order' method of the 'Orders' class.
+        """
+
+        # Mock the return value of cursor.lastrowid
+        self.mock_cursor.lastrowid = 1
+
+        # Define the test order data
+        test_order = {
+            'customer_name': 'John Doe',
+            'total_amount': 100.0,
+            'order_details': [
+                {'product_id': '123', 'quantity': '2', 'total_price': '50.0'},
+                {'product_id': '456', 'quantity': '3', 'total_price': '75.0'}
+            ]
+        }
+
+        # Call the method under test
+        result = self.orders.insert_new_order(test_order)
+        self.assertEqual(result, 1)
+
+
+
+
+
 
