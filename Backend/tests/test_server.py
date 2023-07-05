@@ -1,15 +1,18 @@
 import unittest
 from unittest import mock
 from unittest.mock import MagicMock, patch
-from flask import Flask
+import pytest
+from flask import Flask, jsonify
 import json
 import sys
 import os
+
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(parent_dir)
 from Backend.server import Server
 from Backend.products import Products
 from Backend.orders import Orders
+
 
 # Define a test case class derived from unittest.TestCase
 class ServerTestCase(unittest.TestCase):
@@ -26,7 +29,7 @@ class ServerTestCase(unittest.TestCase):
         self.orders = Orders(self.mock_connection)
         self.server.app = self.app
         self.client = self.app.test_client()
-    
+
     def tearDown(self):
         """
         Clean up resources after each test case.
@@ -66,6 +69,8 @@ class ServerTestCase(unittest.TestCase):
         self.assertIn('/getOrders', routes)
         # Asserting that the '/insertOrder' route is present in the 'routes' list.
         self.assertIn('/insertOrder', routes)
+        # Asserting that the '/salesReport' route is present in the 'routes' list.
+        self.assertIn('/salesReport', routes)
 
     def test_get_all_products(self):
         """
@@ -81,7 +86,7 @@ class ServerTestCase(unittest.TestCase):
         # Mock the request and execute the route function
         with self.server.app.test_request_context('/getProducts', method='GET'):
             response = self.server.get_all_products()
-            
+
             # Assert that the response is correct
             self.assertEqual(response.status_code, 200)
             self.assertEqual(response.get_json(), mock_response)
@@ -101,9 +106,10 @@ class ServerTestCase(unittest.TestCase):
             # Mock the response from the products.insert_new_product method
             mock_product_id = 1
             self.server.products.insert_new_product = MagicMock(return_value=mock_product_id)
-            
+
             # Execute the route function
-            with self.server.app.test_request_context('/insertProduct', method='POST', data={'data': json.dumps(mock_payload)}):
+            with self.server.app.test_request_context('/insertProduct', method='POST',
+                                                      data={'data': json.dumps(mock_payload)}):
                 response = self.server.insert_new_product()
 
                 # Assert that the response is correct
@@ -111,16 +117,15 @@ class ServerTestCase(unittest.TestCase):
                 self.assertEqual(response.get_json(), {'product_id': mock_product_id})
                 self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
 
-
     def test_get_all_orders(self):
         # Mock the response from the orders.get_all_orders method
         mock_response = [{'order_id': 1, 'customer_name': 'Customer 1'}, {'order_id': 2, 'customer_name': 'Customer 2'}]
         self.server.orders.get_all_orders = MagicMock(return_value=mock_response)
-        
+
         # Execute the route function
         with self.server.app.test_request_context('/getOrders', method='GET'):
             response = self.server.get_all_orders()
-            
+
             # Assert that the response is correct
             self.assertEqual(response.status_code, 200)
             self.assertEqual(response.get_json(), mock_response)
@@ -148,10 +153,45 @@ class ServerTestCase(unittest.TestCase):
             self.server.orders.insert_new_order = mock.MagicMock(return_value=mock_order_id)
 
             # Execute the route function
-            with self.server.app.test_request_context('/insertOrder', method='POST', data={'data': json.dumps(mock_payload)}):
+            with self.server.app.test_request_context('/insertOrder', method='POST',
+                                                      data={'data': json.dumps(mock_payload)}):
                 response = self.server.insert_new_order()
 
                 # Assert that the response is correct
                 self.assertEqual(response.status_code, 200)
                 self.assertEqual(response.get_json(), {'order_id': mock_order_id})
                 self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
+
+    def test_get_sales_report(self):
+        """
+        Test the get_sales_report() method of the server.
+        """
+        # Define the list of report types
+        report_types = ['total_sales', 'top_selling_products', 'sales_by_category']
+
+        # Mock the request parameters
+        mock_start_date = '2023-01-01'
+        mock_end_date = '2023-06-30'
+
+        for report_type in report_types:
+            # Mock the request for the current report type
+            mock_request = MagicMock(
+                args={'report_type': report_type, 'start_date': mock_start_date, 'end_date': mock_end_date})
+
+            # Mock the response from the corresponding products method
+            mock_response = [
+                {'order_id': 1, 'customer_name': 'Blake C', 'datetime': '2023-05-20', 'total_amount': 20.00},
+                {'order_id': 2, 'customer_name': 'Usha A', 'datetime': '2023-05-26', 'total_amount': 10.00},
+                {'total_sales': 30.00}
+            ]
+
+            # Mock the request and execute the route function
+            with self.server.app.test_request_context('/salesReport', method='GET', query_string=mock_request.args):
+                # Patch the corresponding report generation method
+                with patch.object(self.server.products, report_type, return_value=mock_response):
+                    # Call the get_sales_report() method
+                    response = self.server.get_sales_report()
+                    # Assert that the response is correct
+                    self.assertEqual(response.status_code, 200)
+                    self.assertEqual(response.get_json(), mock_response)
+                    self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
