@@ -102,6 +102,41 @@ class Products:
         response.append({'total_sales' : total_sales })
         return response
 
+    # @contract
+    # @pre: start_date and end_date must be strings.
+    # @post: The return value must be a dictionary containing the top selling products.
+    def top_selling_products(self, start_date, end_date):
+        """
+        Generate top selling products between the specified dates.
+
+        @param start_date: The start date of the report period.
+        @param end_date: The end date of the report period.
+        @return response:A list containing the top selling products.
+        """
+        # Create a cursor object to execute SQL queries
+        cursor = self.connection.cursor()
+        # Empty List to hold the final response
+        response = []
+        # Query to get top selling products
+        query = (
+                "SELECT products.product_id, products.name, SUM(order_details.quantity) AS total_quantity " +
+                "FROM products " +
+                "JOIN order_details ON products.product_id = order_details.product_id " +
+                "JOIN orders ON order_details.order_id = orders.order_id " +
+                "WHERE orders.datetime BETWEEN %s AND %s " +
+                "GROUP BY products.product_id " +
+                "ORDER BY total_quantity DESC " +
+                "LIMIT 5")
+
+        # Execute the query with the start date and end date parameters
+        cursor.execute(query, (start_date, end_date))
+        # Fetch all the rows from the results set
+        results = cursor.fetchall()
+        # Create a list of dictionaries representing the top five selling produts with details
+        response = [{'product_id': row[0], 'products_name': row[1], 'total_quantity': row[2]} for row in results]
+        # Returns the top selling products as response list
+        return response
+
 
 # def main():
 #     connection = SQLConnection()
