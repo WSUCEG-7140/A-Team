@@ -161,3 +161,40 @@ class TestProducts(unittest.TestCase):
                 "LIMIT 5"
         )
         self.mock_cursor.execute.assert_called_once_with(expected_query, ('2023-05-20', '2023-05-25'))
+
+    def test_sales_by_category(self):
+        """
+        Test the sales_by_category() method of the Products class.
+        This test case verifies that the method retrieves sales report by category.
+        """
+        # Set up mock cursor and its execute method
+        self.mock_cursor.fetchall.return_value = [
+            ('Category A', 10.00),
+            ('Category B', 5.00),
+            ('Category C', 10.00)
+        ]
+        # Input parameters to be passed to sales_by_category method
+        start_date = '2023-05-20'
+        end_date = '2023-05-25'
+        # Call the sales_by_category method under test
+        result = self.products.sales_by_category(start_date, end_date)
+        # Assert the expected response
+        expected_response = [
+            {'category_name': 'Category A', 'total_sales': 10.00},
+            {'category_name': 'Category B', 'total_sales': 5.00},
+            {'category_name': 'Category C', 'total_sales': 10.00}
+        ]
+        self.assertEqual(result, expected_response)
+        # Assert that the cursor and execute methods were called
+        self.mock_connection.cursor.assert_called_once()
+        expected_query = (
+                "SELECT categories.category_name, SUM(order_details.total_price) AS total_sales" +
+                "FROM categories " +
+                "JOIN products ON categories.category_id = products.category_id " +
+                "JOIN order_details ON products.product_id = order_details.product_id " +
+                "JOIN orders ON order_details.order_id = orders.order_id " +
+                "WHERE orders.datetime BETWEEN %s AND %s " +
+                "GROUP BY categories.category_id " +
+                "ORDER BY total_sales DESC"
+        )
+        self.mock_cursor.execute.assert_called_once_with(expected_query, ('2023-05-20', '2023-05-25'))
