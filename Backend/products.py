@@ -1,4 +1,4 @@
-# from sql_connection import SQLConnection
+from sql_connection import SQLConnection
 # from contracts import contract, pre, post
 
 class Products:
@@ -68,6 +68,34 @@ class Products:
         self.connection.commit()
         # Return the last inserted row ID
         return cursor.lastrowid
+
+    # @contract
+    # @pre(lambda product_id: isinstance(product_id, int), "The product_id must be an integer.")
+    # @pre(lambda updated_price: isinstance(updated_price, double), "The product_id must be double.")
+    # @post(lambda result: isinstance(result, bool), "The return value must be an Boolean.")
+    def update_product_details(self,  product_id, updated_price):
+        """
+        Update details of product in the database.
+        @ param product_id: The ID of the product that must be updated with price details.
+        @ param updated_price: The price of the product to be updated.
+        @ return: A boolean value indicating whether the update is successful.
+        """
+        # Create a cursor object to execute SQL queries
+        cursor = self.connection.cursor()
+        # SQL query to update price into the 'products' table
+        query = (
+            "UPDATE products SET price_per_unit = %s WHERE product_id = %s"
+        )
+        # Execute the SQL query with the provided data
+        cursor.execute(query, (updated_price, product_id))
+        # Commit the changes to the database
+        self.connection.commit()
+        # Get the affected row count
+        row_count = cursor.rowcount
+        # Assign the boolean result
+        result = True if row_count > 0 else False
+        # Returns True if successful else False
+        return result
 
     # @contract
     # @pre: start_date and end_date must be strings.
@@ -172,17 +200,17 @@ class Products:
         # Returns the sales report by category as response list
         return response
 
-# def main():
-#     connection = SQLConnection()
-#     connection = connection.connect()
+#def main():
+#    connection = SQLConnection()
+#    connection = connection.connect()
 
-#     products = Products(connection)
-#     products.get_all_products()
+#    products = Products(connection)
+#    products.get_all_products()
 #     products.insert_new_product({
 #         'name': 'potatoes',
 #         'unit_of_measure_id': '1',
 #         'price_per_unit': 10
 #     })
 
-# if __name__ == '__main__':
-#     main()
+#if __name__ == '__main__':
+#    main()
