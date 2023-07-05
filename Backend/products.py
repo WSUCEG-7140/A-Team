@@ -99,7 +99,7 @@ class Products:
         # Calculate the total sales by summing the total_amount values from the results
         total_sales = sum(row[3] for row in results)
         # Append a dictionary to the response list with the total_sales value
-        response.append({'total_sales' : total_sales })
+        response.append({'total_sales': total_sales})
         return response
 
     # @contract
@@ -137,6 +137,40 @@ class Products:
         # Returns the top selling products as response list
         return response
 
+    # @contract
+    # @pre: start_date and end_date must be strings.
+    # @post: The return value must be a dictionary containing the sales by category.
+    def sales_by_category(self, start_date, end_date):
+        """
+        Generate sales report by category between the specified dates.
+
+        @param start_date: The start date of the report period.
+        @param end_date: The end date of the report period.
+        @return response:A list containing the sales report by category.
+        """
+        # Create a cursor object to execute SQL queries
+        cursor = self.connection.cursor()
+        # Empty List to hold the final response
+        response = []
+        # Query to get sales report by category
+        query = (
+                "SELECT categories.category_name, SUM(order_details.total_price) AS total_sales" +
+                "FROM categories " +
+                "JOIN products ON categories.category_id = products.category_id " +
+                "JOIN order_details ON products.product_id = order_details.product_id " +
+                "JOIN orders ON order_details.order_id = orders.order_id " +
+                "WHERE orders.datetime BETWEEN %s AND %s " +
+                "GROUP BY categories.category_id " +
+                "ORDER BY total_sales DESC"
+        )
+        # Execute the query with the start date and end date parameters
+        cursor.execute(query, (start_date, end_date))
+        # Fetch all the rows from the results set
+        results = cursor.fetchall()
+        # Create a list of dictionaries representing the sales report by category
+        response = [{'category_name': row[0], 'total_sales': round(row[1], 2)} for row in results]
+        # Returns the sales report by category as response list
+        return response
 
 # def main():
 #     connection = SQLConnection()
