@@ -1,5 +1,5 @@
-#from sql_connection import SQLConnection
-#from contracts import contract, pre, post
+# from sql_connection import SQLConnection
+# from contracts import contract, pre, post
 
 class Products:
     def __init__(self, connection):
@@ -10,8 +10,8 @@ class Products:
         """
         self.connection = connection
 
-    #@contract
-    #@post(lambda result: isinstance(result, list), "The return value must be a list.")
+    # @contract
+    # @post(lambda result: isinstance(result, list), "The return value must be a list.")
     def get_all_products(self):
         """
         Retrieves all products from the database.
@@ -39,12 +39,12 @@ class Products:
             })
         # Return the response list
         return response
-    
-    #@contract
-    #@pre(lambda product: isinstance(product, dict), "The product must be a dictionary.")
-    #@pre(lambda product: 'name' in product and 'unit_of_measure_id' in product and 'price_per_unit' in product,
-     #    "The product dictionary must contain 'name', 'unit_of_measure_id', and 'price_per_unit' keys.")
-    #@post(lambda result: isinstance(result, int), "The return value must be an integer.")
+
+    # @contract
+    # @pre(lambda product: isinstance(product, dict), "The product must be a dictionary.")
+    # @pre(lambda product: 'name' in product and 'unit_of_measure_id' in product and 'price_per_unit' in product,
+    #    "The product dictionary must contain 'name', 'unit_of_measure_id', and 'price_per_unit' keys.")
+    # @post(lambda result: isinstance(result, int), "The return value must be an integer.")
     def insert_new_product(self, product):
         """
         Inserts a new product into the database.
@@ -69,6 +69,109 @@ class Products:
         # Return the last inserted row ID
         return cursor.lastrowid
 
+    # @contract
+    # @pre: start_date and end_date must be strings.
+    # @post: The return value must be a dictionary containing the total sales report.
+    def total_sales(self, start_date, end_date):
+        """
+        Generate total sales report between the specified dates.
+
+        @param start_date: The start date of the report period.
+        @param end_date: The end date of the report period.
+        @return response:A list containing the total sales report.
+        """
+        # Create a cursor object to execute SQL queries
+        cursor = self.connection.cursor()
+        # Empty List to hold the final response
+        response = []
+        # Query to get total sales
+        query = (
+                "SELECT order_id, customer_name, datetime, total_amount " +
+                "FROM orders " +
+                "WHERE datetime BETWEEN %s AND %s GROUP BY order_id, customer_name")
+        # Execute the query with the start date and end date parameters
+        cursor.execute(query, (start_date, end_date))
+        # Fetch all the rows from the results set
+        results = cursor.fetchall()
+        # Create a list of dictionaries representing each order with its details
+        response = [{'order_id': row[0], 'customer_name': row[1], 'datetime': row[2], 'total_amount': row[3]} for row in
+                    results]
+        # Calculate the total sales by summing the total_amount values from the results
+        total_sales = sum(row[3] for row in results)
+        # Append a dictionary to the response list with the total_sales value
+        response.append({'total_sales': total_sales})
+        return response
+
+    # @contract
+    # @pre: start_date and end_date must be strings.
+    # @post: The return value must be a dictionary containing the top selling products.
+    def top_selling_products(self, start_date, end_date):
+        """
+        Generate top selling products between the specified dates.
+
+        @param start_date: The start date of the report period.
+        @param end_date: The end date of the report period.
+        @return response:A list containing the top selling products.
+        """
+        # Create a cursor object to execute SQL queries
+        cursor = self.connection.cursor()
+        # Empty List to hold the final response
+        response = []
+        # Query to get top selling products
+        query = (
+                "SELECT products.product_id, products.name, SUM(order_details.quantity) AS total_quantity " +
+                "FROM products " +
+                "JOIN order_details ON products.product_id = order_details.product_id " +
+                "JOIN orders ON order_details.order_id = orders.order_id " +
+                "WHERE orders.datetime BETWEEN %s AND %s " +
+                "GROUP BY products.product_id " +
+                "ORDER BY total_quantity DESC " +
+                "LIMIT 5")
+
+        # Execute the query with the start date and end date parameters
+        cursor.execute(query, (start_date, end_date))
+        # Fetch all the rows from the results set
+        results = cursor.fetchall()
+        # Create a list of dictionaries representing the top five selling produts with details
+        response = [{'product_id': row[0], 'products_name': row[1], 'total_quantity': row[2]} for row in results]
+        # Returns the top selling products as response list
+        return response
+
+    # @contract
+    # @pre: start_date and end_date must be strings.
+    # @post: The return value must be a dictionary containing the sales by category.
+    def sales_by_category(self, start_date, end_date):
+        """
+        Generate sales report by category between the specified dates.
+
+        @param start_date: The start date of the report period.
+        @param end_date: The end date of the report period.
+        @return response:A list containing the sales report by category.
+        """
+        # Create a cursor object to execute SQL queries
+        cursor = self.connection.cursor()
+        # Empty List to hold the final response
+        response = []
+        # Query to get sales report by category
+        query = (
+                "SELECT categories.category_name, SUM(order_details.total_price) AS total_sales" +
+                "FROM categories " +
+                "JOIN products ON categories.category_id = products.category_id " +
+                "JOIN order_details ON products.product_id = order_details.product_id " +
+                "JOIN orders ON order_details.order_id = orders.order_id " +
+                "WHERE orders.datetime BETWEEN %s AND %s " +
+                "GROUP BY categories.category_id " +
+                "ORDER BY total_sales DESC"
+        )
+        # Execute the query with the start date and end date parameters
+        cursor.execute(query, (start_date, end_date))
+        # Fetch all the rows from the results set
+        results = cursor.fetchall()
+        # Create a list of dictionaries representing the sales report by category
+        response = [{'category_name': row[0], 'total_sales': round(row[1], 2)} for row in results]
+        # Returns the sales report by category as response list
+        return response
+
 # def main():
 #     connection = SQLConnection()
 #     connection = connection.connect()
@@ -83,10 +186,3 @@ class Products:
 
 # if __name__ == '__main__':
 #     main()
-
-
-
-
-
-
-

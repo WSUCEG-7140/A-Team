@@ -93,11 +93,108 @@ class TestProducts(unittest.TestCase):
         )
         self.mock_connection.commit.assert_called_once()
 
+    def test_total_sales(self):
+        """
+        Test the total_sales() method.
+        This test case verifies the total_sales method returns the sales report based on total sales between the specified dates.
+        """
+        # Set up mock cursor and its execute method
+        self.mock_cursor.fetchall.return_value = [
+            (1, 'Person A', '2023-05-20', 20.00),
+            (2, 'Person B', '2023-05-24', 40.00),
+            (3, 'Person C', '2023-05-24', 10.00)
+        ]
+        # Input parameters to be passed to total_sales method
+        start_date = '2023-05-20'
+        end_date = '2023-05-25'
+        # Call the total_sales method under test
+        result = self.products.total_sales(start_date, end_date)
+        # Assert the expected response
+        expected_response = [
+            {'order_id': 1, 'customer_name': 'Person A', 'datetime': '2023-05-20', 'total_amount': 20.00},
+            {'order_id': 2, 'customer_name': 'Person B', 'datetime': '2023-05-24', 'total_amount': 40.00},
+            {'order_id': 3, 'customer_name': 'Person C', 'datetime': '2023-05-24', 'total_amount': 10.00},
+            {'total_sales': 70.00}
+        ]
+        self.assertEqual(result, expected_response)
+        # Assert that the cursor and execute methods were called
+        self.mock_connection.cursor.assert_called_once()
+        expected_query = (
+                "SELECT order_id, customer_name, datetime, total_amount " +
+                "FROM orders " +
+                "WHERE datetime BETWEEN %s AND %s GROUP BY order_id, customer_name")
+        self.mock_cursor.execute.assert_called_once_with(expected_query, ('2023-05-20', '2023-05-25'))
 
+    def test_top_selling_products(self):
+        """
+        Test the top_selling_products() method of the Products class.
+        This test case verifies that the method retrieves top 5 selling products.
+        """
+        # Set up mock cursor and its execute method
+        self.mock_cursor.fetchall.return_value = [
+            (1, 'Product A', 20),
+            (2, 'Product B', 40),
+            (3, 'Product C', 10)
+        ]
+        # Input parameters to be passed to top_selling_products method
+        start_date = '2023-05-20'
+        end_date = '2023-05-25'
+        # Call the top_selling_products method under test
+        result = self.products.top_selling_products(start_date, end_date)
+        # Assert the expected response
+        expected_response = [
+            {'product_id': 1, 'products_name': 'Product A', 'total_quantity': 20},
+            {'product_id': 2, 'products_name': 'Product B', 'total_quantity': 40},
+            {'product_id': 3, 'products_name': 'Product C', 'total_quantity': 10}
+        ]
+        self.assertEqual(result, expected_response)
+        # Assert that the cursor and execute methods were called
+        self.mock_connection.cursor.assert_called_once()
+        expected_query = (
+                "SELECT products.product_id, products.name, SUM(order_details.quantity) AS total_quantity " +
+                "FROM products " +
+                "JOIN order_details ON products.product_id = order_details.product_id " +
+                "JOIN orders ON order_details.order_id = orders.order_id " +
+                "WHERE orders.datetime BETWEEN %s AND %s " +
+                "GROUP BY products.product_id " +
+                "ORDER BY total_quantity DESC " +
+                "LIMIT 5"
+        )
+        self.mock_cursor.execute.assert_called_once_with(expected_query, ('2023-05-20', '2023-05-25'))
 
-
-
-
-
-
-
+    def test_sales_by_category(self):
+        """
+        Test the sales_by_category() method of the Products class.
+        This test case verifies that the method retrieves sales report by category.
+        """
+        # Set up mock cursor and its execute method
+        self.mock_cursor.fetchall.return_value = [
+            ('Category A', 10.00),
+            ('Category B', 5.00),
+            ('Category C', 10.00)
+        ]
+        # Input parameters to be passed to sales_by_category method
+        start_date = '2023-05-20'
+        end_date = '2023-05-25'
+        # Call the sales_by_category method under test
+        result = self.products.sales_by_category(start_date, end_date)
+        # Assert the expected response
+        expected_response = [
+            {'category_name': 'Category A', 'total_sales': 10.00},
+            {'category_name': 'Category B', 'total_sales': 5.00},
+            {'category_name': 'Category C', 'total_sales': 10.00}
+        ]
+        self.assertEqual(result, expected_response)
+        # Assert that the cursor and execute methods were called
+        self.mock_connection.cursor.assert_called_once()
+        expected_query = (
+                "SELECT categories.category_name, SUM(order_details.total_price) AS total_sales" +
+                "FROM categories " +
+                "JOIN products ON categories.category_id = products.category_id " +
+                "JOIN order_details ON products.product_id = order_details.product_id " +
+                "JOIN orders ON order_details.order_id = orders.order_id " +
+                "WHERE orders.datetime BETWEEN %s AND %s " +
+                "GROUP BY categories.category_id " +
+                "ORDER BY total_sales DESC"
+        )
+        self.mock_cursor.execute.assert_called_once_with(expected_query, ('2023-05-20', '2023-05-25'))
