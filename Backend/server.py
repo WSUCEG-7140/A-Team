@@ -88,6 +88,44 @@ class Server:
 
     # @contract
     # @post(lambda result: isinstance(result, Flask.Response), "The return value must be a Flask Response object.")
+    def remove_product(self, product_id):
+        """
+        Remove specific product in the database.
+
+        @ param product_id: The ID of the product to be that must be removed from the database.
+        Returns:
+             Flask Response: JSON response containing the message.
+        """
+        result = self.products.delete_product(product_id)  # Removes product from the database
+        if result is True:
+            response = jsonify({'success': True, 'message': 'Product Removed Successfully.'}) # Creates a JSON response with a message.
+        else:
+            response = jsonify({'success': False, 'message': 'Failed to Remove Product.'}) # Creates a JSON response with a message.
+        response.headers.add('Access-Control-Allow-Origin', '*')  # Adds a header to allow cross-origin requests
+        return response
+
+
+    # @contract
+    # @post(lambda result: isinstance(result, Flask.Response), "The return value must be a Flask Response object.")
+    def update_product_information(self, product_id):
+        """
+        Update existing product information in the database.
+
+        @ param product_id: The ID of the product to be that must be updated with price details.
+        Returns:
+            Flask Response: JSON response containing the message.
+        """
+        updated_price = request.json.get('price_per_unit')
+        result = self.products.update_product_details(product_id, updated_price)  # Updates product information in the database
+        if result is True:
+            response = jsonify({'success': True, 'message': 'Product Details Updated Successfully.'}) # Creates a JSON response with a message.
+        else:
+            response = jsonify({'success': False, 'message': 'Failed to Update Product Details.'}) # Creates a JSON response with a message.
+        response.headers.add('Access-Control-Allow-Origin', '*')  # Adds a header to allow cross-origin requests
+        return response
+
+    # @contract
+    # @post(lambda result: isinstance(result, Flask.Response), "The return value must be a Flask Response object.")
     def get_sales_report(self):
         """
 
@@ -139,15 +177,12 @@ class Server:
             self.insert_new_order)  # Sets up a route for inserting a new order
         self.app.route('/salesReport', methods=['GET'])(
             self.get_sales_report)  # Sets up a route for generating sales report
-        self.app.route('/products', methods=['GET'])(
-            self.search_products
-        )
-        
-
-   
-    
-
-
+        self.app.route('/searchProduct', methods=['GET'])(
+            self.search_products)
+        self.app.route('/updateProductInformation/<int:product_id>', methods=['POST'])(
+            self.update_product_information) # Sets up a route to update details of existing products.
+        self.app.route('/removeProduct/<int:product_id>', methods=['POST'])(
+            self.remove_product)  # Sets up a route to remove product from the database
 
 if __name__ == '__main__':
     app = Server()  # Creates an instance of the Server class
