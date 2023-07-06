@@ -89,7 +89,8 @@ class Products:
         )
         # Execute the SQL query using the cursor
         cursor.execute(query, (product_id,))
-        # Check if any rows are affected
+        # Get the affected row count, returns positive number if deleted else return 0 if product with product_id is
+        # not found.
         row_count = cursor.rowcount
         result = row_count > 0
         # Disable foreign key checks
@@ -120,7 +121,8 @@ class Products:
         cursor.execute(query, (updated_price, product_id))
         # Commit the changes to the database
         self.connection.commit()
-        # Get the affected row count
+        # Get the affected row count, returns positive number if updated else return 0 if product with product_id is
+        # not found.
         row_count = cursor.rowcount
         # Assign the boolean result
         result = True if row_count > 0 else False

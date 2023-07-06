@@ -74,6 +74,9 @@ class ServerTestCase(unittest.TestCase):
         # Asserting that the '/updateProductInformation/<int:product_id>' route is present in the
         # 'routes' list.
         self.assertIn('/updateProductInformation/<int:product_id>', routes)
+        # Asserting that the '/removeProduct/<int:product_id>' route is present in the
+        # 'routes' list.
+        self.assertIn('/removeProduct/<int:product_id>', routes)
 
     def test_get_all_products(self):
         """
@@ -163,6 +166,34 @@ class ServerTestCase(unittest.TestCase):
                 # Assert that the response is correct
                 self.assertEqual(response.status_code, 200)
                 self.assertEqual(response.get_json(), {'order_id': mock_order_id})
+                self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
+
+    def test_remove_product(self):
+        """
+        Test the remove_product() route of the server
+        This test case verifies that the remove_product() route returns the correct response
+        for both successful and failed removal.
+
+        returns: None
+        """
+        # Define test cases with different inputs and different outputs
+        test_cases =[
+            (True, {'success': True, 'message': 'Product Removed Successfully.'}),
+            (False, {'success': False, 'message': 'Failed to Remove Product.'})
+        ]
+        # Iterate over the test cases
+        for result, expected_response in test_cases:
+
+            mock_result = result
+            self.server.products.delete_product = MagicMock(return_value=mock_result)
+
+            # Execute the route function
+            with self.server.app.test_request_context('/removeProduct/1', method='POST',):
+                response = self.server.remove_product(1)
+
+                # Assert that the response is correct
+                self.assertEqual(response.status_code, 200)
+                self.assertEqual(response.get_json(), expected_response)
                 self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
 
     def test_update_product_information(self):
