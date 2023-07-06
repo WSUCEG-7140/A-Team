@@ -71,6 +71,8 @@ class ServerTestCase(unittest.TestCase):
         self.assertIn('/insertOrder', routes)
         # Asserting that the '/salesReport' route is present in the 'routes' list.
         self.assertIn('/salesReport', routes)
+        # Asserting that the '/searchProduct' route is present in the 'route' list.
+        self.assertIn('/products', routes)
 
     def test_get_all_products(self):
         """
@@ -195,3 +197,35 @@ class ServerTestCase(unittest.TestCase):
                     self.assertEqual(response.status_code, 200)
                     self.assertEqual(response.get_json(), mock_response)
                     self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
+          
+    def test_search_products(self):
+        """
+        Test the search_products() method of the server.
+
+        This test case verifies that the search_products() method correctly handles the request
+        to search for a specific product name and returns the expected JSON response.
+        """
+
+        # Set up the input parameters
+        product_name = 'Product 1'
+
+        # Mock the response from the server.products.search_products method
+        mock_response = {
+        'product_id': 1,
+        'name': 'Product 1',
+        'unit_of_measure_id': 1,
+        'price_per_unit': 10.0,
+        'unit_of_measure_name': 'Unit 1'
+        }
+        self.server.products.search_products = MagicMock(return_value=mock_response)
+
+        # Use the test client to make requests within the application context
+        with self.server.app.test_request_context('/products', method='GET'):
+        # Make the request to the searchProducts endpoint
+            response = self.server.search_products()
+
+            # Assert that the response is correct
+            expected_response = jsonify(mock_response)
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.get_json(), expected_response.get_json())
+            self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
