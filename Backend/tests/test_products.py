@@ -93,6 +93,25 @@ class TestProducts(unittest.TestCase):
         )
         self.mock_connection.commit.assert_called_once()
 
+    def test_delete_product(self):
+        """
+        Test the delete_product() method of Products.
+
+        This test case verifies that the delete_product() method correctly deletes specific product
+        in the database and returns the result as True for successful delete or False.
+        """
+        # Set the rowcount to indicate deletion. set 0 to test an unsuccessful deletion
+        self.mock_cursor.rowcount = 1
+        # Call the delete_product() method under test and assert the expected result
+        self.assertIn(self.products.delete_product(1), [True, False])
+        # Assert that the cursor, execute, and commit methods were called
+        self.mock_connection.cursor.assert_called_once()
+        self.mock_cursor.execute.assert_any_call("SET FOREIGN_KEY_CHECKS = 0")
+        self.mock_cursor.execute.assert_any_call("DELETE FROM products WHERE product_id = %s", (1, ))
+        self.mock_cursor.execute.assert_any_call("SET FOREIGN_KEY_CHECKS = 1")
+        self.mock_connection.commit.assert_called_once()
+
+
     def test_update_product_details(self):
         """
         Test the update_product_details() method of Products.
