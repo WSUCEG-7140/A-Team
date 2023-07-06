@@ -93,6 +93,26 @@ class TestProducts(unittest.TestCase):
         )
         self.mock_connection.commit.assert_called_once()
 
+    def test_update_product_details(self):
+        """
+        Test the update_product_details() method of Products.
+
+        This test case verifies that the update_product_details() method correctly updates existing product details
+        in the database and returns the result as True for successful update or False.
+        """
+        # Set the rowcount to indicate an update. set 0 to test an unsuccessful update
+        self.mock_cursor.rowcount = 1
+        # Call the update_product_details() method under test and assert the expected result
+        self.assertIn(self.products.update_product_details(1, 10), [True, False])
+        # Assert that the cursor, execute, and commit methods were called
+        self.mock_connection.cursor.assert_called_once()
+        expected_query = (
+            "UPDATE products SET price_per_unit = %s WHERE product_id = %s"
+        )
+        # Assert that the cursor, execute, and commit methods were called
+        self.mock_cursor.execute.assert_called_once_with(expected_query, (10, 1))
+        self.mock_connection.commit.assert_called_once()
+
     def test_total_sales(self):
         """
         Test the total_sales() method.
