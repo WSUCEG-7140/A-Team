@@ -71,6 +71,9 @@ class ServerTestCase(unittest.TestCase):
         self.assertIn('/insertOrder', routes)
         # Asserting that the '/salesReport' route is present in the 'routes' list.
         self.assertIn('/salesReport', routes)
+        # Asserting that the '/updateProductInformation/<int:product_id>' route is present in the
+        # 'routes' list.
+        self.assertIn('/updateProductInformation/<int:product_id>', routes)
 
     def test_get_all_products(self):
         """
@@ -101,7 +104,7 @@ class ServerTestCase(unittest.TestCase):
 
         # Mock the request payload
         mock_payload = {'name': 'New Product'}
-        mock_request = MagicMock(form={'data': json.dumps(mock_payload)})
+        mock_request = MagicMock(json=mock_payload)
         with patch('flask.request', mock_request):
             # Mock the response from the products.insert_new_product method
             mock_product_id = 1
@@ -161,6 +164,39 @@ class ServerTestCase(unittest.TestCase):
                 self.assertEqual(response.status_code, 200)
                 self.assertEqual(response.get_json(), {'order_id': mock_order_id})
                 self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
+
+    def test_update_product_information(self):
+        """
+        Test the update_product_information() route of the server
+        This test case verifies that the update_product_information() route returns the correct response
+        for both successful and failed updates.
+
+        returns: None
+        """
+        # Define test cases with different inputs and different outputs
+        test_cases =[
+            (10.99, True, {'success': True, 'message': 'Product Details Updated Successfully.'}),
+            (20.65, False, {'success': False, 'message': 'Failed to Update Product Details.'})
+        ]
+        # Iterate over the test cases
+        for price, result, expected_response in test_cases:
+            # Mock the request JSON data
+            mock_payload = {'price_per_unit' : price}
+            mock_request = MagicMock(json=mock_payload)
+            with patch('flask.request', mock_request):
+                # Mock the response from the products.update_product_details method.
+                mock_result = result
+                self.server.products.update_product_details = MagicMock(return_value=mock_result)
+
+                # Execute the route function
+                with self.server.app.test_request_context('/updateProductInformation/1', method='POST',
+                                                      json=mock_payload):
+                    response = self.server.update_product_information(1)
+
+                    # Assert that the response is correct
+                    self.assertEqual(response.status_code, 200)
+                    self.assertEqual(response.get_json(), expected_response)
+                    self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
 
     def test_get_sales_report(self):
         """

@@ -77,7 +77,7 @@ class Products:
         """
         Update details of product in the database.
         @ param product_id: The ID of the product that must be updated with price details.
-        @ param updated_price: The price of the product to be updated.
+        @ param updated_price: The data of the product to be updated.
         @ return: A boolean value indicating whether the update is successful.
         """
         # Create a cursor object to execute SQL queries

@@ -101,7 +101,7 @@ class TestProducts(unittest.TestCase):
         in the database and returns the result as True for successful update or False.
         """
         # Set the rowcount to indicate an update. set 0 to test an unsuccessful update
-        self.mock_cursor.rowcount = 0
+        self.mock_cursor.rowcount = 1
         # Call the update_product_details() method under test and assert the expected result
         self.assertIn(self.products.update_product_details(1, 10), [True, False])
         # Assert that the cursor, execute, and commit methods were called
