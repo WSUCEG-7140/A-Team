@@ -88,6 +88,23 @@ class Server:
 
     # @contract
     # @post(lambda result: isinstance(result, Flask.Response), "The return value must be a Flask Response object.")
+    def update_product_information(self, product_id):
+        """
+        Update existing product information in the database.
+
+        @ param product_id: The ID of the product to be that must be updated with price details.
+        Returns:
+            Flask Response: JSON response containing the inserted order ID.
+        """
+        updated_price = request.json.get('updateProductInformation') # Retrieve the updated price from the request
+        result = self.products.update_product_details(product_id, updated_price)  # Update the product details in the database.
+        if result is True:
+            return jsonify({'success': True, 'message': 'Product Details Updated Successfully.'}) # Creates a JSON response with a message.
+        else:
+            return jsonify({'success': False, 'message': 'Failed to Update Product Details.'}) # Creates a JSON response with a message.
+
+    # @contract
+    # @post(lambda result: isinstance(result, Flask.Response), "The return value must be a Flask Response object.")
     def get_sales_report(self):
         """
 
@@ -123,6 +140,8 @@ class Server:
             self.insert_new_order)  # Sets up a route for inserting a new order
         self.app.route('/salesReport', methods=['GET'])(
             self.get_sales_report)  # Sets up a route for generating sales report
+        self.app.route('/getProducts/<int:product_id>/updateProductInformation', methods=['POST'])(
+            self.update_product_information) # Sets up a route to update details of existing products.
 
 
 if __name__ == '__main__':
