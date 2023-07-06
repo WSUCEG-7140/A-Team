@@ -71,6 +71,36 @@ class Products:
 
     # @contract
     # @pre(lambda product_id: isinstance(product_id, int), "The product_id must be an integer.")
+    # @post(lambda result: isinstance(result, bool), "The return value must be an Boolean.")
+    def delete_product(self, product_id):
+        """
+        @ param product_id: The product_id of the product to be deleted.
+        @ return result: A boolean value indicate successful deletion of the product.
+        """
+
+        # Create a cursor object to execute SQL queries
+        cursor = self.connection.cursor()
+        # Disable foreign key checks
+        disable_fk_query = "SET FOREIGN_KEY_CHECKS = 0"
+        cursor.execute(disable_fk_query)
+        # SQL query to delete specific product from products table
+        query = (
+            "DELETE FROM products WHERE product_id = %s"
+        )
+        # Execute the SQL query using the cursor
+        cursor.execute(query, (product_id,))
+        # Check if any rows are affected
+        row_count = cursor.rowcount
+        result = row_count > 0
+        # Disable foreign key checks
+        enable_fk_query = "SET FOREIGN_KEY_CHECKS = 1"
+        cursor.execute(enable_fk_query)
+        # Commit the changes to the database
+        self.connection.commit()
+        return result
+
+    # @contract
+    # @pre(lambda product_id: isinstance(product_id, int), "The product_id must be an integer.")
     # @pre(lambda updated_price: isinstance(updated_price, double), "The product_id must be double.")
     # @post(lambda result: isinstance(result, bool), "The return value must be an Boolean.")
     def update_product_details(self,  product_id, updated_price):
