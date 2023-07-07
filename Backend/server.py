@@ -147,7 +147,23 @@ class Server:
         response = jsonify(response)  # Converts the response to a JSON object
         response.headers.add('Access-Control-Allow-Origin', '*')  # Adds a header to allow cross-origin requests
         return response
+    
+    # @contract
+    # @post(lambda result: isinstance(result, Flask.Response), "The return value must be a Flask Response object.")
+    def search_products(self):
+        """
+        Search the product name into the database.
 
+        Returns:
+            Flask Response: JSON response containing the product name.
+        """
+        product_name = request.args.get('product_name', '')  # Get the 'product_name' parameter from the request
+        response = self.products.search_products(product_name)  # Call the search_products method with the provided product name
+        response = jsonify(response)  # Converts the response to a JSON object
+        response.headers.add('Access-Control-Allow-Origin', '*')  # Adds a header to allow cross-origin requests
+        return response
+
+    
     def setup_routes(self):
         """
         Sets up the routes for the Flask application.
@@ -161,6 +177,8 @@ class Server:
             self.insert_new_order)  # Sets up a route for inserting a new order
         self.app.route('/salesReport', methods=['GET'])(
             self.get_sales_report)  # Sets up a route for generating sales report
+        self.app.route('/searchProduct', methods=['GET'])(
+            self.search_products)
         self.app.route('/updateProductInformation/<int:product_id>', methods=['POST'])(
             self.update_product_information) # Sets up a route to update details of existing products.
         self.app.route('/removeProduct/<int:product_id>', methods=['POST'])(

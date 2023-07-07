@@ -1,6 +1,9 @@
 from sql_connection import SQLConnection
 # from contracts import contract, pre, post
 
+from itertools import product
+
+
 class Products:
     def __init__(self, connection):
         """
@@ -231,6 +234,48 @@ class Products:
         response = [{'category_name': row[0], 'total_sales': round(row[1], 2)} for row in results]
         # Returns the sales report by category as response list
         return response
+    
+    # @contract
+    # @pre: product_name must be a string.
+    # @post: The return value must be a dictionary representing the product found, or None if not found.
+    def search_products(self, product_name):
+        """
+        Retrieves a specific product from the database based on the provided product name.
+
+        @param product_name: The name of the product to search for.
+        @return: A dictionary representing the product, or None if not found.
+        """
+
+        # Create a cursor object to execute SQL queries
+        cursor = self.connection.cursor()
+        # SQL query to select specific columns from two tables using an INNER JOIN, with a WHERE clause to filter by product name
+        query = (
+            "SELECT products.product_id, products.name, products.unit_of_measure_id, products.price_per_unit, unit_of_measures.unit_of_measure_name "
+            "FROM products "
+            "INNER JOIN unit_of_measures ON products.unit_of_measure_id = unit_of_measures.unit_of_measure_id "
+            "WHERE products.name = %s"
+        )
+        # Execute the SQL query using the cursor, passing the product name as a parameter
+        cursor.execute(query, (product_name,))
+        # Fetch the first row from the result set
+        result = cursor.fetchone()
+
+        # If a result was found, return it as a dictionary; otherwise, return None
+        if result:
+            product_id, name, unit_of_measure_id, price_per_unit, unit_of_measure_name = result
+            return {
+                'product_id': product_id,
+                'name': name,
+                'unit_of_measure_id': unit_of_measure_id,
+                'price_per_unit': price_per_unit,
+                'unit_of_measure_name': unit_of_measure_name
+            }
+        else:
+            return None
+
+
+
+
 
 #def main():
 #    connection = SQLConnection()

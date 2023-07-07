@@ -237,3 +237,39 @@ class TestProducts(unittest.TestCase):
                 "ORDER BY total_sales DESC"
         )
         self.mock_cursor.execute.assert_called_once_with(expected_query, ('2023-05-20', '2023-05-25'))
+
+    def test_search_products(self):
+        """
+        Test the search_products() method of Products.
+
+        This test case verifies that the search_products() method correctly retrieves a specific product
+        from the database based on the provided product name.
+        """
+        # Set up mock cursor and its execute method
+        mock_response = (1, 'Product 1', 1, 10.0, 'Unit 1')
+        self.mock_cursor.fetchone.return_value = mock_response
+
+        # Input parameters to be passed to search_products method
+        product_name = 'Product 1'
+
+        # Call the search_products method under test
+        result = self.products.search_products(product_name)
+
+        # Assert the expected result
+        expected_result = {
+            'product_id': 1,
+            'name': 'Product 1',
+            'unit_of_measure_id': 1,
+            'price_per_unit': 10.0,
+            'unit_of_measure_name': 'Unit 1'
+        }
+
+        # Assert that the cursor and execute methods were called
+        self.assertEqual(result, expected_result)
+        self.mock_cursor.execute.assert_called_once_with(
+            "SELECT products.product_id, products.name, products.unit_of_measure_id, products.price_per_unit, unit_of_measures.unit_of_measure_name "
+            "FROM products "
+            "INNER JOIN unit_of_measures ON products.unit_of_measure_id = unit_of_measures.unit_of_measure_id "
+            "WHERE products.name = %s",
+            ('Product 1',)
+        )
