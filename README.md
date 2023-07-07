@@ -33,7 +33,6 @@ Front-end:
 
 
 # Technologies Used
-1.	Front end:  HTML, CSS, JavaScript
-2.	Backend:    Python, Flask
+1.	Backend:    Python, Flask
 3.	Database:   MYSQL
 
