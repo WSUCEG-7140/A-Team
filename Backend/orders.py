@@ -116,6 +116,43 @@ class Orders:
             return order
         else:
             return None
+    
+    def delete_order(self, order_id):
+        """
+        Delete an order from the database.
+
+        Args:
+            order_id (int): The ID of the order to be deleted.
+
+        Returns:
+            bool: True if the order was successfully deleted, False otherwise.
+        """
+        # Create a cursor object to execute SQL queries
+        cursor = self.connection.cursor()
+
+        # Disable foreign key checks
+        disable_fk_query = "SET FOREIGN_KEY_CHECKS = 0"
+        cursor.execute(disable_fk_query)
+
+        # SQL query to delete specific order from orders table
+        query = "DELETE FROM orders WHERE order_id = %s"
+
+        # Execute the SQL query using the cursor
+        cursor.execute(query, (order_id,))
+
+        # Get the affected row count, returns a positive number if deleted, else returns 0 if order with order_id is not found
+        row_count = cursor.rowcount
+        result = row_count > 0
+
+        # Enable foreign key checks
+        enable_fk_query = "SET FOREIGN_KEY_CHECKS = 1"
+        cursor.execute(enable_fk_query)
+
+        # Commit the changes to the database
+        self.connection.commit()
+
+        return result
+
 
 # def main():
 #     """

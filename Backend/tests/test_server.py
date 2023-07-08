@@ -82,7 +82,9 @@ class ServerTestCase(unittest.TestCase):
         # Asserting that the '/getOrderById' route is present in the
         # 'routes' list.
         self.assertIn('/getOrderById', routes)
-
+        # Asserting that the '/removeOrder/<int:order_id>' route is present in the
+        # 'routes' list.
+        self.assertIn('/removeOrder/<int:order_id>', routes)
 
     def test_get_all_products(self):
         """
@@ -315,5 +317,34 @@ class ServerTestCase(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             self.assertEqual(response.get_json()['order_id'], order_id)
             self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
+    
+    def test_remove_order(self):
+        """
+        Test the remove_order() route of the server.
+        This test case verifies that the remove_order() route returns the correct response
+        for both successful and failed removal.
+
+        returns: None
+        """
+        # Define test cases with different inputs and different outputs
+        test_cases = [
+            (True, {'success': True, 'message': 'Order Removed Successfully.'}),
+            (False, {'success': False, 'message': 'Failed to Remove Order.'})
+        ]
+
+        # Iterate over the test cases
+        for result, expected_response in test_cases:
+
+            mock_result = result
+            self.server.orders.delete_order = MagicMock(return_value=mock_result)
+
+            # Execute the route function
+            with self.server.app.test_request_context('/removeOrder/1', method='POST'):
+                response = self.server.remove_order(1)
+
+                # Assert that the response is correct
+                self.assertEqual(response.status_code, 200)
+                self.assertEqual(response.get_json(), expected_response)
+                self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
 
 
