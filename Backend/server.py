@@ -163,6 +163,8 @@ class Server:
         response.headers.add('Access-Control-Allow-Origin', '*')  # Adds a header to allow cross-origin requests
         return response
 
+    # @contract
+    # @post(lambda result: isinstance(result, Flask.Response), "The return value must be a Flask Response object.")
     def get_order_by_id(self, order_id):
         """
         Retrieves an order by its ID from the database.
@@ -183,6 +185,8 @@ class Server:
         response.headers.add('Access-Control-Allow-Origin', '*')  # Adds a header to allow cross-origin requests
         return response
     
+    # @contract
+    # @post(lambda result: isinstance(result, Flask.Response), "The return value must be a Flask Response object.")
     def remove_order(self, order_id):
         """
         Remove a specific order from the database.

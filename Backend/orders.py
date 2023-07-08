@@ -86,7 +86,9 @@ class Orders:
         #return order_id
         return cursor.lastrowid
     
-
+    #@contract
+    #@pre(lambda order: isinstance(order, dict))
+    #@post(lambda result: isinstance(result, int))
     def get_order_by_id(self, order_id):
         """
         Retrieves an order from the database by its order ID.
@@ -117,6 +119,9 @@ class Orders:
         else:
             return None
     
+    #@contract
+    #@pre(lambda order: isinstance(order, dict))
+    #@post(lambda result: isinstance(result, int))
     def delete_order(self, order_id):
         """
         Delete an order from the database.
