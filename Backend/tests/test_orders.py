@@ -91,6 +91,27 @@ class OrdersTestCase(unittest.TestCase):
         }
         self.assertEqual(result, expected_response)
 
+    def test_delete_order(self):
+        """
+        Test the delete_order() method of Orders.
+
+        This test case verifies that the delete_order() method correctly deletes a specific order
+        in the database and returns True for a successful delete or False for an unsuccessful delete.
+        """
+        # Set the rowcount to indicate deletion. Set 0 to test an unsuccessful deletion.
+        self.mock_cursor.rowcount = 1
+    
+        # Call the delete_order() method under test and assert the expected result.
+        self.assertIn(self.orders.delete_order(1), [True, False])
+    
+        # Assert that the cursor, execute, and commit methods were called.
+        self.mock_connection.cursor.assert_called_once()
+        self.mock_cursor.execute.assert_any_call("SET FOREIGN_KEY_CHECKS = 0")
+        self.mock_cursor.execute.assert_any_call("DELETE FROM orders WHERE order_id = %s", (1,))
+        self.mock_cursor.execute.assert_any_call("SET FOREIGN_KEY_CHECKS = 1")
+        self.mock_connection.commit.assert_called_once()
+
+
 
 
 

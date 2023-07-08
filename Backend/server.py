@@ -163,6 +163,8 @@ class Server:
         response.headers.add('Access-Control-Allow-Origin', '*')  # Adds a header to allow cross-origin requests
         return response
 
+    # @contract
+    # @post(lambda result: isinstance(result, Flask.Response), "The return value must be a Flask Response object.")
     def get_order_by_id(self, order_id):
         """
         Retrieves an order by its ID from the database.
@@ -183,6 +185,24 @@ class Server:
         response.headers.add('Access-Control-Allow-Origin', '*')  # Adds a header to allow cross-origin requests
         return response
     
+    # @contract
+    # @post(lambda result: isinstance(result, Flask.Response), "The return value must be a Flask Response object.")
+    def remove_order(self, order_id):
+        """
+        Remove a specific order from the database.
+
+        @param order_id: The ID of the order to be removed from the database.
+        Returns:
+            Flask Response: JSON response containing the message.
+        """
+        result = self.orders.delete_order(order_id)  # Removes the order from the database
+        if result is True:
+            response = jsonify({'success': True, 'message': 'Order Removed Successfully.'})  # Creates a JSON response with a message.
+        else:
+            response = jsonify({'success': False, 'message': 'Failed to Remove Order.'})  # Creates a JSON response with a message.
+        response.headers.add('Access-Control-Allow-Origin', '*')  # Adds a header to allow cross-origin requests
+        return response
+    
     def setup_routes(self):
         """
         Sets up the routes for the Flask application.
@@ -197,13 +217,16 @@ class Server:
         self.app.route('/salesReport', methods=['GET'])(
             self.get_sales_report)  # Sets up a route for generating sales report
         self.app.route('/searchProduct', methods=['GET'])(
-            self.search_products)
+            self.search_products) # Sets up a route to search product from the database
         self.app.route('/updateProductInformation/<int:product_id>', methods=['POST'])(
             self.update_product_information) # Sets up a route to update details of existing products.
         self.app.route('/removeProduct/<int:product_id>', methods=['POST'])(
             self.remove_product)  # Sets up a route to remove product from the database
         self.app.route('/getOrderById', methods=['GET'])(
-            self.get_order_by_id)
+            self.get_order_by_id) # Sets up a route to get order by id from the database
+        self.app.route('/removeOrder/<int:order_id>', methods=['POST'])(
+            self.remove_order) # Sets up a route to remove order from the database
+        
 
 if __name__ == '__main__':
     app = Server()  # Creates an instance of the Server class
