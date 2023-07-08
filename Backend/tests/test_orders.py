@@ -66,6 +66,32 @@ class OrdersTestCase(unittest.TestCase):
         self.assertEqual(result, 1)
 
 
+    def test_get_order_by_id(self):
+        """
+        Test case for the 'get_order_by_id' method of the 'Orders' class.
+        """
+
+        # Mock the result returned by the query
+        order_id = 1
+        mock_result = (order_id, 'John Doe', 100.0, datetime.now())
+        self.mock_cursor.fetchone.return_value = mock_result
+
+        # Call the method under test
+        result = self.orders.get_order_by_id(order_id)
+
+        # Assert the expected SQL query was executed
+        self.mock_cursor.execute.assert_called_once_with("SELECT * FROM orders WHERE order_id = %s", (order_id,))
+
+        # Assert the expected response was returned
+        expected_response = {
+            'order_id': order_id,
+            'customer_name': 'John Doe',
+            'total_amount': 100.0,
+            'datetime': mock_result[3]
+        }
+        self.assertEqual(result, expected_response)
+
+
 
 
 

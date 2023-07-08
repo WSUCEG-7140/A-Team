@@ -163,6 +163,25 @@ class Server:
         response.headers.add('Access-Control-Allow-Origin', '*')  # Adds a header to allow cross-origin requests
         return response
 
+    def get_order_by_id(self, order_id):
+        """
+        Retrieves an order by its ID from the database.
+
+        Args:
+            order_id (int): The ID of the order to retrieve.
+
+        Returns:
+            Flask Response: JSON response containing the order.
+        """
+        order = self.orders.get_order_by_id(order_id)  # Retrieves the order from the database by ID
+
+        if order is None:
+            # Handle case when the order is not found
+            return jsonify({'error': 'Order not found'}), 404
+
+        response = jsonify(order)  # Converts the order to a JSON object
+        response.headers.add('Access-Control-Allow-Origin', '*')  # Adds a header to allow cross-origin requests
+        return response
     
     def setup_routes(self):
         """
@@ -183,6 +202,8 @@ class Server:
             self.update_product_information) # Sets up a route to update details of existing products.
         self.app.route('/removeProduct/<int:product_id>', methods=['POST'])(
             self.remove_product)  # Sets up a route to remove product from the database
+        self.app.route('/getOrderById', methods=['GET'])(
+            self.get_order_by_id)
 
 if __name__ == '__main__':
     app = Server()  # Creates an instance of the Server class

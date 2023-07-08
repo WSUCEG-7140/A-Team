@@ -85,6 +85,37 @@ class Orders:
         # Return the last inserted row ID
         #return order_id
         return cursor.lastrowid
+    
+
+    def get_order_by_id(self, order_id):
+        """
+        Retrieves an order from the database by its order ID.
+
+        @param order_id: The ID of the order to retrieve.
+        @return: A dictionary representing the order.
+        """
+        # Create a cursor object to execute SQL queries
+        cursor = self.connection.cursor()
+        # SQL query to retrieve a specific order by its ID
+        query = (
+            "SELECT * FROM orders WHERE order_id = %s"
+        )
+        # Execute the SQL query using the cursor and pass the order_id as a parameter
+        cursor.execute(query, (order_id,))
+        # Fetch the first row returned by the query
+        result = cursor.fetchone()
+
+        if result:
+            # Create a dictionary representing the order
+            order = {
+                'order_id': result[0],
+                'customer_name': result[1],
+                'total_amount': result[2],
+                'datetime': result[3],
+            }
+            return order
+        else:
+            return None
 
 # def main():
 #     """

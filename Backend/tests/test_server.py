@@ -79,6 +79,10 @@ class ServerTestCase(unittest.TestCase):
         # Asserting that the '/removeProduct/<int:product_id>' route is present in the
         # 'routes' list.
         self.assertIn('/removeProduct/<int:product_id>', routes)
+        # Asserting that the '/getOrderById' route is present in the
+        # 'routes' list.
+        self.assertIn('/getOrderById', routes)
+
 
     def test_get_all_products(self):
         """
@@ -296,3 +300,20 @@ class ServerTestCase(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             self.assertEqual(response.get_json(), expected_response.get_json())
             self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
+
+    def test_get_order_by_id(self):
+        # Mock the response from the orders.get_order_by_id method
+        order_id = 1
+        mock_order = {'order_id': 1, 'customer_name': 'Customer 1'}
+        self.server.orders.get_order_by_id = MagicMock(return_value=mock_order)
+
+        # Execute the route function
+        with self.server.app.test_request_context(f'/getOrder/{order_id}', method='GET'):
+            response = self.server.get_order_by_id(order_id)
+
+            # Assert that the response is correct
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.get_json()['order_id'], order_id)
+            self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
+
+
