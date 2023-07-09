@@ -16,7 +16,7 @@ class TestUnit_Of_Measure(unittest.TestCase):
         self.mock_cursor = MagicMock()
         self.mock_connection = MagicMock()
         self.mock_connection.cursor.return_value = self.mock_cursor
-        self.products = get_unit_of_measure(self.mock_connection)
+        self.unit_of_measures = get_unit_of_measure(self.mock_connection)
 
     def test_get_unit_of_measure(self):
         # Create a mock connection and cursor
@@ -26,15 +26,15 @@ class TestUnit_Of_Measure(unittest.TestCase):
         mock_connection.cursor.return_value = mock_cursor
 
         # Call the get_unit_of_measure function
-        uoms = get_unit_of_measure(mock_connection)
+        unit_of_measure = get_unit_of_measure(mock_connection)
 
         # Assert the response is correct
         expected_response = [
-            {'uom_id': 1, 'uom_name': 'kg'},
-            {'uom_id': 2, 'uom_name': 'lb'}
+            {'unit_of_measure_id': 1, 'unit_of_measure_name': 'kg'},
+            {'unit_of_measure_id': 2, 'unit_of_measure_name': 'lb'}
         ]
-        self.assertEqual(uoms, expected_response)
+        self.assertEqual(unit_of_measure, expected_response)
 
         # Assert that the cursor and execute methods were called
         mock_connection.cursor.assert_called_once()
-        mock_cursor.execute.assert_called_once_with("SELECT uom_id, uom_name FROM uom")
+        mock_cursor.execute.assert_called_once_with("SELECT unit_of_measure_id, unit_of_measure_name FROM unit_of_measure")

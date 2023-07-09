@@ -16,18 +16,18 @@ def get_unit_of_measure(connection):
     # Create a cursor object to execute SQL queries
     cursor = connection.cursor() 
     # SQL query to retrieve unit of measure 
-    query = "SELECT uom_id, uom_name FROM uom"  
+    query = "SELECT unit_of_measure_id, unit_of_measure_name FROM unit_of_measure"  
     # Execute the query using the cursor
     cursor.execute(query)  
     response = []
     # Iterate over the query results
-    for uom_id, uom_name in cursor:  
+    for unit_of_measure_id, unit_of_measure_name in cursor:  
         # Create a dictionary for each unit of measure
         response.append({  
             # Store the uom_id
-            'uom_id': uom_id,  
+            'unit_of_measure_id': unit_of_measure_id,  
             # Store the uom_name
-            'uom_name': uom_name  
+            'unit_of_measure_name': unit_of_measure_name  
         })
     # Return the list of unit of measure dictionaries
     return response  
