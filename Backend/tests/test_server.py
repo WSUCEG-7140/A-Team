@@ -85,6 +85,9 @@ class ServerTestCase(unittest.TestCase):
         # Asserting that the '/removeOrder/<int:order_id>' route is present in the
         # 'routes' list.
         self.assertIn('/removeOrder/<int:order_id>', routes)
+        # Asserting that the 'updateOrderInformation/<int:order_id>' route is present in the
+        # 'routes' list.
+        self.assertIn('/updateOrderInformation/<int:order_id>', routes)
 
     def test_get_all_products(self):
         """

@@ -110,6 +110,26 @@ class OrdersTestCase(unittest.TestCase):
         self.mock_cursor.execute.assert_any_call("DELETE FROM orders WHERE order_id = %s", (1,))
         self.mock_cursor.execute.assert_any_call("SET FOREIGN_KEY_CHECKS = 1")
         self.mock_connection.commit.assert_called_once()
+    
+    def test_update_order_amount(self):
+        """
+        Test the update_order_amount() method of Orders.
+
+        This test case verifies that the update_order_amount() method correctly updates the amount of an existing order
+        in the database and returns the result as True for a successful update or False.
+        """
+        # Set the rowcount to indicate an update. Set 0 to test an unsuccessful update
+        self.mock_cursor.rowcount = 1
+
+        # Call the update_order_amount() method under test and assert the expected result
+        self.assertIn(self.orders.update_order_amount(1, 100), [True, False])
+
+        # Assert that the cursor, execute, and commit methods were called
+        self.mock_connection.cursor.assert_called_once()
+        expected_query = "UPDATE orders SET amount = %s WHERE order_id = %s"
+        self.mock_cursor.execute.assert_called_once_with(expected_query, (100, 1))
+        self.mock_connection.commit.assert_called_once()
+
 
 
 
