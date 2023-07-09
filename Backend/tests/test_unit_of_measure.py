@@ -4,8 +4,9 @@ import sys
 import os
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(parent_dir)
-from Backend.unit_of_measure import get_uoms
-class TestUOMs(unittest.TestCase):
+from Backend.unit_of_measure import get_unit_of_measure
+
+class TestUnit_Of_Measure(unittest.TestCase):
     def setUp(self):
         """
         Set up the test case.
@@ -15,9 +16,9 @@ class TestUOMs(unittest.TestCase):
         self.mock_cursor = MagicMock()
         self.mock_connection = MagicMock()
         self.mock_connection.cursor.return_value = self.mock_cursor
-        self.products = get_uoms(self.mock_connection)
+        self.products = get_unit_of_measure(self.mock_connection)
 
-    def test_get_uoms(self):
+    def test_get_unit_of_measure(self):
         # Create a mock connection and cursor
         mock_cursor = MagicMock()
         mock_cursor.__iter__.return_value = [(1, 'kg'), (2, 'lb')]
@@ -25,7 +26,7 @@ class TestUOMs(unittest.TestCase):
         mock_connection.cursor.return_value = mock_cursor
 
         # Call the get_uoms function
-        uoms = get_uoms(mock_connection)
+        uoms = get_unit_of_measure(mock_connection)
 
         # Assert the response is correct
         expected_response = [

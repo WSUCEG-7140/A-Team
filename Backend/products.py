@@ -46,7 +46,7 @@ class Products:
     # @contract
     # @pre(lambda product: isinstance(product, dict), "The product must be a dictionary.")
     # @pre(lambda product: 'name' in product and 'unit_of_measure_id' in product and 'price_per_unit' in product,
-    #    "The product dictionary must contain 'name', 'unit_of_measure_id', and 'price_per_unit' keys.")
+    # "The product dictionary must contain 'name', 'unit_of_measure_id', and 'price_per_unit' keys.")
     # @post(lambda result: isinstance(result, int), "The return value must be an integer.")
     def insert_new_product(self, product):
         """

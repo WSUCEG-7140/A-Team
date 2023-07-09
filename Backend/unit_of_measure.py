@@ -10,7 +10,9 @@ class unit_of_measure:
         """
         self.connection = connection
 
-def get_uoms(connection):
+# @contract
+# @post(lambda result: isinstance(result, list), "The return value must be a list.")
+def get_unit_of_measure(connection):
     cursor = connection.cursor()
     query = "SELECT uom_id, uom_name FROM uom"
     cursor.execute(query)
