@@ -13,16 +13,24 @@ class unit_of_measure:
 # @contract
 # @post(lambda result: isinstance(result, list), "The return value must be a list.")
 def get_unit_of_measure(connection):
-    cursor = connection.cursor()
-    query = "SELECT uom_id, uom_name FROM uom"
-    cursor.execute(query)
+    # Create a cursor object to execute SQL queries
+    cursor = connection.cursor() 
+    # SQL query to retrieve unit of measure 
+    query = "SELECT uom_id, uom_name FROM uom"  
+    # Execute the query using the cursor
+    cursor.execute(query)  
     response = []
-    for uom_id, uom_name in cursor:
-        response.append({
-            'uom_id': uom_id,
-            'uom_name': uom_name
+    # Iterate over the query results
+    for uom_id, uom_name in cursor:  
+        # Create a dictionary for each unit of measure
+        response.append({  
+            # Store the uom_id
+            'uom_id': uom_id,  
+            # Store the uom_name
+            'uom_name': uom_name  
         })
-    return response
+    # Return the list of unit of measure dictionaries
+    return response  
 
 #if __name__ == '__main__':
     #from sql_connection import SQLConnection
