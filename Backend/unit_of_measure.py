@@ -4,7 +4,7 @@ from sql_connection import SQLConnection
 class unit_of_measure:
     def __init__(self, connection):
         """
-        Constructor for Products class.
+        Constructor for unit_of_measure class.
 
         @param connection: The database connection object.
         """

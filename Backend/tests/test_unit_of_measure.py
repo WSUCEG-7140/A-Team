@@ -25,7 +25,7 @@ class TestUnit_Of_Measure(unittest.TestCase):
         mock_connection = MagicMock()
         mock_connection.cursor.return_value = mock_cursor
 
-        # Call the get_uoms function
+        # Call the get_unit_of_measure function
         uoms = get_unit_of_measure(mock_connection)
 
         # Assert the response is correct
