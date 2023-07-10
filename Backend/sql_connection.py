@@ -33,4 +33,14 @@ class SQLConnection:
             self.connection.close()
             self.connection = None
 
-
+    # @contract
+    # @post(lambda result: isinstance(result, mysql.connector.cursor.MySQLCursor),
+    #       "The return value must be a MySQLCursor object.")
+    def cursor(self):
+        """
+        Returns the cursor object to execute SQL queries
+        @ return: The cursor object
+        """
+        if self.connection is None:
+            self.connect()
+        return self.connection.cursor()
