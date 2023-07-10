@@ -4,37 +4,39 @@ import sys
 import os
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(parent_dir)
-from Backend.unit_of_measure import get_unit_of_measure
+from Backend.unit_of_measure import unit_of_measure
 
-class TestUnit_Of_Measure(unittest.TestCase):
+class Unit_Of_MeasureTestCase(unittest.TestCase):
     def setUp(self):
         """
-        Set up the test case.
-
-        This method is called before each test case execution.
+        Set up the test case by creating mock objects and initializing the 'unit_of_measure' instance.
         """
         self.mock_cursor = MagicMock()
         self.mock_connection = MagicMock()
         self.mock_connection.cursor.return_value = self.mock_cursor
-        self.unit_of_measures = get_unit_of_measure(self.mock_connection)
+        self.unit_of_measures = unit_of_measure(self.mock_connection)
 
     def test_get_unit_of_measure(self):
-        # Create a mock connection and cursor
-        mock_cursor = MagicMock()
-        mock_cursor.__iter__.return_value = [(1, 'kg'), (2, 'lb')]
-        mock_connection = MagicMock()
-        mock_connection.cursor.return_value = mock_cursor
+        """
+        Test case for the 'get_unit_of_measure' method of the 'unit_of_measure' class.
+        """
 
-        # Call the get_unit_of_measure function
-        unit_of_measure = get_unit_of_measure(mock_connection)
+        # Mock the result set returned by the query
+        mock_result_set = [
+            (1, 'kg'),
+            (2, 'lbs')
+        ]
+        self.mock_cursor.__iter__.return_value = iter(mock_result_set)
 
-        # Assert the response is correct
+        # Call the method under test
+        result = self.unit_of_measures.get_unit_of_measure()
+
+        # Assert the expected SQL query was executed
+        self.mock_cursor.execute.assert_called_once_with("SELECT * FROM unit_of_measure")
+
+        # Assert the expected response was returned
         expected_response = [
             {'unit_of_measure_id': 1, 'unit_of_measure_name': 'kg'},
-            {'unit_of_measure_id': 2, 'unit_of_measure_name': 'lb'}
+            {'unit_of_measure_id': 2, 'unit_of_measure_name': 'lbs'}
         ]
-        self.assertEqual(unit_of_measure, expected_response)
-
-        # Assert that the cursor and execute methods were called
-        mock_connection.cursor.assert_called_once()
-        mock_cursor.execute.assert_called_once_with("SELECT unit_of_measure_id, unit_of_measure_name FROM unit_of_measure")
+        self.assertEqual(result, expected_response)

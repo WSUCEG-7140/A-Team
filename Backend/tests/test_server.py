@@ -12,6 +12,7 @@ sys.path.append(parent_dir)
 from Backend.server import Server
 from Backend.products import Products
 from Backend.orders import Orders
+from Backend.unit_of_measure import unit_of_measure
 
 
 # Define a test case class derived from unittest.TestCase
@@ -27,6 +28,7 @@ class ServerTestCase(unittest.TestCase):
         self.mock_connection.cursor.return_value = self.mock_cursor
         self.products = Products(self.mock_connection)
         self.orders = Orders(self.mock_connection)
+        self.unit_of_measure = unit_of_measure(self.mock_connection)
         self.server.app = self.app
         self.client = self.app.test_client()
 
@@ -88,6 +90,10 @@ class ServerTestCase(unittest.TestCase):
         # Asserting that the 'updateOrderInformation/<int:order_id>' route is present in the
         # 'routes' list.
         self.assertIn('/updateOrderInformation/<int:order_id>', routes)
+        # Asserting that the 'getUnitOfMeasure' route is present in the
+        # 'routes' list.
+        self.assertIn('/getUnitOfMeasure', routes)
+
 
     def test_get_all_products(self):
         """
@@ -383,6 +389,23 @@ class ServerTestCase(unittest.TestCase):
                     self.assertEqual(response.status_code, 200)
                     self.assertEqual(response.get_json(), expected_response)
                     self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
+
+    def test_get_unit_of_measure(self):
+        # Mock the response from the unit_of_measure.get_unit_of_measure method
+        mock_response = [{'unit_of_measure_id': 1}, {'unit_of_measure_id': 2}]
+        self.server.unit_of_measure.get_unit_of_measure = MagicMock(return_value=mock_response)
+
+        # Execute the route function
+        with self.server.app.test_request_context('/getUnitOfMeasure', method='GET'):
+            response = self.server.get_unit_of_measure()
+
+            # Assert that the response is correct
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.get_json(), mock_response)
+            self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
+    
+
+        
 
 
 
