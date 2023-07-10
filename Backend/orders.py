@@ -157,6 +157,42 @@ class Orders:
         self.connection.commit()
 
         return result
+    
+    #@contract
+    #@pre(lambda order: isinstance(order, dict))
+    #@post(lambda result: isinstance(result, int))
+    def update_order_details(self, order_id, updated_amount):
+        """
+        Update the amount of an order in the database.
+
+        Args:
+            order_id (int): The ID of the order to update.
+            updated_amount (float): The updated amount of the order.
+
+        Returns:
+            bool: A boolean value indicating whether the update is successful.
+        """
+        # Create a cursor object to execute SQL queries
+        cursor = self.connection.cursor()
+
+        # SQL query to update the amount into the 'orders' table
+        query = "UPDATE orders SET amount = %s WHERE order_id = %s"
+
+        # Execute the SQL query with the provided data
+        cursor.execute(query, (updated_amount, order_id))
+
+        # Commit the changes to the database
+        self.connection.commit()
+
+        # Get the affected row count, returns a positive number if updated else return 0 if order with order_id is
+        # not found.
+        row_count = cursor.rowcount
+
+        # Assign the boolean result
+        result = True if row_count > 0 else False
+
+        # Returns True if successful else False
+        return result
 
 
 # def main():

@@ -187,6 +187,25 @@ class Server:
     
     # @contract
     # @post(lambda result: isinstance(result, Flask.Response), "The return value must be a Flask Response object.")
+    def update_order_information(self, order_id):
+        """
+        Update existing order information in the database.
+
+        @param order_id: The ID of the order that must be updated with the new amount.
+        Returns:
+            Flask Response: JSON response containing the message.
+        """
+        updated_amount = request.json.get('amount')
+        result = self.orders.update_order_details(order_id, updated_amount)  # Updates order information in the database
+        if result is True:
+            response = jsonify({'success': True, 'message': 'Order Details Updated Successfully.'})  # Creates a JSON response with a message.
+        else:
+            response = jsonify({'success': False, 'message': 'Failed to Update Order Details.'})  # Creates a JSON response with a message.
+        response.headers.add('Access-Control-Allow-Origin', '*')  # Adds a header to allow cross-origin requests
+        return response
+    
+    # @contract
+    # @post(lambda result: isinstance(result, Flask.Response), "The return value must be a Flask Response object.")
     def remove_order(self, order_id):
         """
         Remove a specific order from the database.
@@ -203,6 +222,8 @@ class Server:
         response.headers.add('Access-Control-Allow-Origin', '*')  # Adds a header to allow cross-origin requests
         return response
     
+  
+
     def setup_routes(self):
         """
         Sets up the routes for the Flask application.
@@ -226,6 +247,8 @@ class Server:
             self.get_order_by_id) # Sets up a route to get order by id from the database
         self.app.route('/removeOrder/<int:order_id>', methods=['POST'])(
             self.remove_order) # Sets up a route to remove order from the database
+        self.app.route('/updateOrderInformation/<int:order_id>', methods=['POST'])(
+            self.update_order_information) # Sets up a route to update order from the database
         
 
 if __name__ == '__main__':

@@ -85,6 +85,9 @@ class ServerTestCase(unittest.TestCase):
         # Asserting that the '/removeOrder/<int:order_id>' route is present in the
         # 'routes' list.
         self.assertIn('/removeOrder/<int:order_id>', routes)
+        # Asserting that the 'updateOrderInformation/<int:order_id>' route is present in the
+        # 'routes' list.
+        self.assertIn('/updateOrderInformation/<int:order_id>', routes)
 
     def test_get_all_products(self):
         """
@@ -346,5 +349,40 @@ class ServerTestCase(unittest.TestCase):
                 self.assertEqual(response.status_code, 200)
                 self.assertEqual(response.get_json(), expected_response)
                 self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
+
+    def test_update_order_information(self):
+        """
+        Test the update_order_information() route of the server
+        This test case verifies that the update_order_information() route returns the correct response
+        for both successful and failed updates.
+
+        returns: None
+        """
+        # Define test cases with different inputs and different outputs
+        test_cases = [
+            (10.99, True, {'success': True, 'message': 'Order Details Updated Successfully.'}),
+            (20.65, False, {'success': False, 'message': 'Failed to Update Order Details.'})
+        ]
+    
+        # Iterate over the test cases
+        for amount, result, expected_response in test_cases:
+            # Mock the request JSON data
+            mock_payload = {'amount': amount}
+            mock_request = MagicMock(json=mock_payload)
+            with patch('flask.request', mock_request):
+                # Mock the response from the orders.update_order_details method
+                mock_result = result
+                self.server.orders.update_order_details = MagicMock(return_value=mock_result)
+
+                # Execute the route function
+                with self.server.app.test_request_context('/updateOrderInformation/1', method='POST',
+                                                      json=mock_payload):
+                    response = self.server.update_order_information(1)
+
+                    # Assert that the response is correct
+                    self.assertEqual(response.status_code, 200)
+                    self.assertEqual(response.get_json(), expected_response)
+                    self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
+
 
 
