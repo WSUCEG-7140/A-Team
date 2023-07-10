@@ -77,5 +77,31 @@ class TestSQLConnection(unittest.TestCase):
         # Assert that the connection attribute of sql_connection is now None
         self.assertIsNone(sql_connection.connection)
 
+    def test_cursor(self):
+        """
+        Test the cursor() method of SQLConnection.
 
+        This test case verifies that the cursor() method correctly returns a cursor object
+        to execute SQL queries.
+        """
 
+        # Create an instance of SQLConnection
+        sql_connection = SQLConnection()
+
+        # Create a mock connection object
+        mock_connection = mock.Mock(spec=mysql.connector.MySQLConnection)
+
+        # Configure the mock connect method to return the mock connection
+        self.mock_connect.return_value = mock_connection
+
+        # Call the cursor method and capture the returned cursor
+        cursor = sql_connection.cursor()
+
+        # Assert that the returned cursor is the same as the cursor from the mock connection
+        self.assertEqual(cursor, mock_connection.cursor.return_value)
+
+        # Assert that the connect method is called once
+        self.mock_connect.assert_called_once()
+
+        # Assert that the cursor method of the mock connection is called once
+        mock_connection.cursor.assert_called_once()
