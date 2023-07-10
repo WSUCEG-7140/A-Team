@@ -161,7 +161,7 @@ class Orders:
     #@contract
     #@pre(lambda order: isinstance(order, dict))
     #@post(lambda result: isinstance(result, int))
-    def update_order_amount(self, order_id, updated_amount):
+    def update_order_details(self, order_id, updated_amount):
         """
         Update the amount of an order in the database.
 

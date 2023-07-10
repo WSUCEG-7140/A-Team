@@ -111,7 +111,7 @@ class OrdersTestCase(unittest.TestCase):
         self.mock_cursor.execute.assert_any_call("SET FOREIGN_KEY_CHECKS = 1")
         self.mock_connection.commit.assert_called_once()
     
-    def test_update_order_amount(self):
+    def test_update_order_details(self):
         """
         Test the update_order_amount() method of Orders.
 
@@ -122,7 +122,7 @@ class OrdersTestCase(unittest.TestCase):
         self.mock_cursor.rowcount = 1
 
         # Call the update_order_amount() method under test and assert the expected result
-        self.assertIn(self.orders.update_order_amount(1, 100), [True, False])
+        self.assertIn(self.orders.update_order_details(1, 100), [True, False])
 
         # Assert that the cursor, execute, and commit methods were called
         self.mock_connection.cursor.assert_called_once()
