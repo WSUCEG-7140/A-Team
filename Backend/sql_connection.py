@@ -16,7 +16,7 @@ class SQLConnection:
         @return The MySQL connection object.
         """
         user = 'root'  # Set your MySQL username here
-        password = 'root'   # Set your MySQL password here
+        password = 'remoteextent066'   # Set your MySQL password here
         database = 'grocery_store'  # Set the name of your database here
         if self.connection is None:
             self.connection = mysql.connector.connect(user=user, password=password, database=database)
@@ -33,4 +33,14 @@ class SQLConnection:
             self.connection.close()
             self.connection = None
 
-
+    # @contract
+    # @post(lambda result: isinstance(result, mysql.connector.cursor.MySQLCursor),
+    #       "The return value must be a MySQLCursor object.")
+    def cursor(self):
+        """
+        Returns the cursor object to execute SQL queries
+        @ return: The cursor object
+        """
+        if self.connection is None:
+            self.connect()
+        return self.connection.cursor()

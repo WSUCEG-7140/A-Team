@@ -1,4 +1,4 @@
-from sql_connection import SQLConnection
+#from sql_connection import SQLConnection
 # from contracts import contract, pre, post
 
 from itertools import product
