@@ -22,7 +22,7 @@ Anuhya Akkineni:
 I started working on Issue #5, which involves setting up automated Python code documentation generation. Once Issue #4 is completed, I will be able to proceed with the implementation of automated code documentation generation.
 
 Mousami Khadilkar:
-Working on issue number 11, design and implement error handling mechanism in API with urgent priority. To complete the particular issue will be using try catch block mechanism but the previous issue from 1 to 10 needs to be done. 
+I have done all setups required for the application. I am currently working on issue number 10 API endpoints for searching products from the database. I will be using search_product method to complete the particular issue.
 
 ## Additional Notes:
 Team will pick tasks as per priority assigned.
