@@ -22,6 +22,7 @@ Anuhya Akkineni:
 I have completed Issue 34 and implemented API for generating sales report and I have started working on Issue 8 for implementing API to update the details of existing products in the database.
 
 Mousami Khadilkar:
+I wrote the test case and completed the Issue 58. After that I also completed Issue 69 API to remove specific order from the database and I have started working on Issue 71.
 
 ## Additional Notes:
 NONE

@@ -22,6 +22,7 @@ Anuhya Akkineni:
 I have completed Issue 5 - Automated Python code documentation for developers. Now, I am currently working on Issue 34 for implementing API for generating sales report by report type between specific dates.
 
 Mousami Khadilkar:
+I have completed Issue 10- API endpoints for searching products from the database and also ensured the functionality of the endpoints. Now, I am working on Issue 58 API endpoints to retrieve order through order id in which I completed the code and will continue with the test case for it.
 
 ## Additional Notes:
 NONE

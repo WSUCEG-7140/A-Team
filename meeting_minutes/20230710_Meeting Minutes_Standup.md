@@ -22,7 +22,7 @@ Anuhya Akkineni:
 I have completed working on Issue 8 for implementing API to update the details of existing products in the database. I have also completed working on Issue 9 and implemented API for removing specific product from the database.
 
 Mousami Khadilkar:
-
+I have completed working on Issue 71 API endpoints for retrieving unit of measure and completed it . I also completed the issue 73 API endpoints for updating the details of existing order in the database and checked the functionality.
 
 ## Additional Notes:
 NONE
