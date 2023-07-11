@@ -4,9 +4,9 @@ import sys
 import os
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(parent_dir)
-from Backend.unit_of_measure import unit_of_measure
+from Backend.unit_of_measures import unit_of_measures
 
-class Unit_Of_MeasureTestCase(unittest.TestCase):
+class Unit_Of_MeasuresTestCase(unittest.TestCase):
     def setUp(self):
         """
         Set up the test case by creating mock objects and initializing the 'unit_of_measure' instance.
@@ -14,9 +14,9 @@ class Unit_Of_MeasureTestCase(unittest.TestCase):
         self.mock_cursor = MagicMock()
         self.mock_connection = MagicMock()
         self.mock_connection.cursor.return_value = self.mock_cursor
-        self.unit_of_measures = unit_of_measure(self.mock_connection)
+        self.unit_of_measures = unit_of_measures(self.mock_connection)
 
-    def test_get_unit_of_measure(self):
+    def test_get_unit_of_measures(self):
         """
         Test case for the 'get_unit_of_measure' method of the 'unit_of_measure' class.
         """
@@ -29,10 +29,10 @@ class Unit_Of_MeasureTestCase(unittest.TestCase):
         self.mock_cursor.__iter__.return_value = iter(mock_result_set)
 
         # Call the method under test
-        result = self.unit_of_measures.get_unit_of_measure()
+        result = self.unit_of_measures.get_unit_of_measures()
 
         # Assert the expected SQL query was executed
-        self.mock_cursor.execute.assert_called_once_with("SELECT * FROM unit_of_measure")
+        self.mock_cursor.execute.assert_called_once_with("SELECT * FROM unit_of_measures")
 
         # Assert the expected response was returned
         expected_response = [

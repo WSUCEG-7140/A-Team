@@ -1,10 +1,10 @@
 from sql_connection import SQLConnection
 # from contracts import contract, pre, post
 
-class unit_of_measure:
+class unit_of_measures:
     def __init__(self, connection):
         """
-        Constructor for unit_of_measure class.
+        Constructor for unit_of_measures class.
 
         @param connection: The database connection object.
         """
@@ -12,11 +12,11 @@ class unit_of_measure:
 
     # @contract
     # @post(lambda result: isinstance(result, list), "The return value must be a list.")
-    def get_unit_of_measure(self):
+    def get_unit_of_measures(self):
         # Create a cursor object to execute SQL queries
         cursor = self.connection.cursor() 
-        # SQL query to retrieve unit of measure 
-        query = ("SELECT * FROM unit_of_measure") 
+        # SQL query to retrieve unit of measures 
+        query = ("SELECT * FROM unit_of_measures") 
         # Execute the query using the cursor
         cursor.execute(query)  
         response = []
@@ -29,7 +29,7 @@ class unit_of_measure:
                 # Store the unit_of_measure_name
                 'unit_of_measure_name': unit_of_measure_name  
             })
-        # Return the list of unit of measure dictionaries
+        # Return the list of unit of measures dictionaries
         return response  
 
 #if __name__ == '__main__':

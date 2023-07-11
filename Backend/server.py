@@ -8,7 +8,7 @@ from Backend.sql_connection import SQLConnection
 import json
 from Backend.products import Products
 from Backend.orders import Orders
-from Backend.unit_of_measure import unit_of_measure
+from Backend.unit_of_measures import unit_of_measures
 
 
 # from contracts import contract, pre, post
@@ -22,7 +22,7 @@ class Server:
         self.connection = SQLConnection()  # Establishes a SQL connection
         self.products = Products(self.connection)  # Creates an instance of the Products class with the SQL connection
         self.orders = Orders(self.connection)  # Creates an instance of the Orders class with the SQL connection
-        self.unit_of_measure = unit_of_measure(self.connection) # Creates an instance of the unit_of_measure class with the SQL connection
+        self.unit_of_measures = unit_of_measures(self.connection) # Creates an instance of the unit_of_measure class with the SQL connection
 
     def run(self):
         """
@@ -224,14 +224,14 @@ class Server:
         response.headers.add('Access-Control-Allow-Origin', '*')  # Adds a header to allow cross-origin requests
         return response
     
-    def get_unit_of_measure(self):
+    def get_unit_of_measures(self):
         """
         Retrieves all orders from the database.
 
         Returns:
             Flask Response: JSON response containing all orders.
         """
-        response = self.unit_of_measure.get_unit_of_measure()  # Retrieves all orders from the database
+        response = self.unit_of_measures.get_unit_of_measures()  # Retrieves all orders from the database
         response = jsonify(response)  # Converts the response to a JSON object
         response.headers.add('Access-Control-Allow-Origin', '*')  # Adds a header to allow cross-origin requests
         return response
@@ -263,8 +263,8 @@ class Server:
             self.remove_order) # Sets up a route to remove order from the database
         self.app.route('/updateOrderInformation/<int:order_id>', methods=['POST'])(
             self.update_order_information) # Sets up a route to update order from the database
-        self.app.route('/getUnitOfMeasure', methods=['GET'])(
-            self.get_unit_of_measure) # Sets up a route to update order from the database
+        self.app.route('/getUnitOfMeasures', methods=['GET'])(
+            self.get_unit_of_measures) # Sets up a route to update order from the database
 
 if __name__ == '__main__':
     app = Server()  # Creates an instance of the Server class
