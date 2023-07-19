@@ -1,7 +1,4 @@
-#from sql_connection import SQLConnection
 # from contracts import contract, pre, post
-
-from itertools import product
 
 
 class Products:
@@ -260,34 +257,12 @@ class Products:
         # Fetch the first row from the result set
         result = cursor.fetchone()
 
-        # If a result was found, return it as a dictionary; otherwise, return None
-        if result:
-            product_id, name, unit_of_measure_id, price_per_unit, unit_of_measure_name = result
-            return {
-                'product_id': product_id,
-                'name': name,
-                'unit_of_measure_id': unit_of_measure_id,
-                'price_per_unit': price_per_unit,
-                'unit_of_measure_name': unit_of_measure_name
-            }
-        else:
-            return None
-
-
-
-
-
-#def main():
-#    connection = SQLConnection()
-#    connection = connection.connect()
-
-#    products = Products(connection)
-#    products.get_all_products()
-#     products.insert_new_product({
-#         'name': 'potatoes',
-#         'unit_of_measure_id': '1',
-#         'price_per_unit': 10
-#     })
-
-#if __name__ == '__main__':
-#    main()
+        # return result as a dictionary
+        product_id, name, unit_of_measure_id, price_per_unit, unit_of_measure_name = result
+        return {
+            'product_id': product_id,
+            'name': name,
+            'unit_of_measure_id': unit_of_measure_id,
+            'price_per_unit': price_per_unit,
+            'unit_of_measure_name': unit_of_measure_name
+        }

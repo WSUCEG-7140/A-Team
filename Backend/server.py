@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 import sys
 import os
-
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(parent_dir)
 from Backend.sql_connection import SQLConnection
@@ -9,8 +8,6 @@ import json
 from Backend.products import Products
 from Backend.orders import Orders
 from Backend.unit_of_measures import unit_of_measures
-
-
 # from contracts import contract, pre, post
 
 class Server:
@@ -178,11 +175,6 @@ class Server:
             Flask Response: JSON response containing the order.
         """
         order = self.orders.get_order_by_id(order_id)  # Retrieves the order from the database by ID
-
-        if order is None:
-            # Handle case when the order is not found
-            return jsonify({'error': 'Order not found'}), 404
-
         response = jsonify(order)  # Converts the order to a JSON object
         response.headers.add('Access-Control-Allow-Origin', '*')  # Adds a header to allow cross-origin requests
         return response
@@ -267,6 +259,10 @@ class Server:
             self.get_unit_of_measures) # Sets up a route to update order from the database
 
 if __name__ == '__main__':
+    """
+    this section is typically executed when the script is run directly, it is challenging to write test cases to cover this part of the code as 
+    it starts the Flask application, which runs indefinitely and blocks further code execution.
+    """
     app = Server()  # Creates an instance of the Server class
     app.setup_routes()  # Sets up the routes for the Flask application
     app.run()  # Starts the Flask application

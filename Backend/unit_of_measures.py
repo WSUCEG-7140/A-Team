@@ -1,4 +1,3 @@
-from sql_connection import SQLConnection
 # from contracts import contract, pre, post
 
 class unit_of_measures:
@@ -30,8 +29,4 @@ class unit_of_measures:
                 'unit_of_measure_name': unit_of_measure_name  
             })
         # Return the list of unit of measures dictionaries
-        return response  
-
-#if __name__ == '__main__':
-#       main()
-
+        return response

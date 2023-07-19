@@ -1,5 +1,4 @@
 from datetime import datetime
-#from sql_connection import SQLConnection
 #from contracts import contract, pre, post
 
 class Orders:
@@ -107,17 +106,14 @@ class Orders:
         # Fetch the first row returned by the query
         result = cursor.fetchone()
 
-        if result:
-            # Create a dictionary representing the order
-            order = {
-                'order_id': result[0],
-                'customer_name': result[1],
-                'total_amount': result[2],
-                'datetime': result[3],
-            }
-            return order
-        else:
-            return None
+        # Create a dictionary representing the order
+        order = {
+            'order_id': result[0],
+            'customer_name': result[1],
+            'total_amount': result[2],
+            'datetime': result[3],
+        }
+        return order
     
     #@contract
     #@pre(lambda order: isinstance(order, dict))
@@ -193,20 +189,6 @@ class Orders:
 
         # Returns True if successful else False
         return result
-
-
-# def main():
-#     """
-#     Entry point of the program.
-#     """
-#     connection = SQLConnection()
-#     connection = connection.connect()
-
-#     orders = Orders(connection)
-#     orders.get_all_orders()
-
-# if __name__ == '__main__':
-#     main()
 
 
 
