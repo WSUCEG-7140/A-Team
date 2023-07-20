@@ -7,6 +7,7 @@ parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(parent_dir)
 from Backend.orders import Orders
 
+""" \test @ref R57_0 R59_0 R58_0 R69_0 R73_0"""
 class OrdersTestCase(unittest.TestCase):
     def setUp(self):
         """
@@ -18,6 +19,7 @@ class OrdersTestCase(unittest.TestCase):
         self.mock_connection.cursor.return_value = self.mock_cursor
         self.orders = Orders(self.mock_connection)
 
+    """ \test @ref R57_0"""
     def test_get_all_orders(self):
         """
         Test case for the 'get_all_orders' method of the 'Orders' class.
@@ -43,6 +45,7 @@ class OrdersTestCase(unittest.TestCase):
         ]
         self.assertEqual(result, expected_response)
 
+    """ \test @ref R59_0"""
     def test_insert_new_order(self):
         """
         Test case for the 'insert_new_order' method of the 'Orders' class.
@@ -65,7 +68,7 @@ class OrdersTestCase(unittest.TestCase):
         result = self.orders.insert_new_order(test_order)
         self.assertEqual(result, 1)
 
-
+    """ \test @ref R58_0"""
     def test_get_order_by_id(self):
         """
         Test case for the 'get_order_by_id' method of the 'Orders' class.
@@ -91,6 +94,7 @@ class OrdersTestCase(unittest.TestCase):
         }
         self.assertEqual(result, expected_response)
 
+    """ \test @ref R69_0"""
     def test_delete_order(self):
         """
         Test the delete_order() method of Orders.
@@ -111,6 +115,7 @@ class OrdersTestCase(unittest.TestCase):
         self.mock_cursor.execute.assert_any_call("SET FOREIGN_KEY_CHECKS = 1")
         self.mock_connection.commit.assert_called_once()
     
+    """ \test @ref R73_0"""
     def test_update_order_details(self):
         """
         Test the update_order_amount() method of Orders.

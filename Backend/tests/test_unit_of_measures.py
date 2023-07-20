@@ -6,7 +6,9 @@ parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(parent_dir)
 from Backend.unit_of_measures import unit_of_measures
 
+""" \test @ref R71_0"""
 class Unit_Of_MeasuresTestCase(unittest.TestCase):
+    """ \test @ref R71_0"""
     def setUp(self):
         """
         Set up the test case by creating mock objects and initializing the 'unit_of_measure' instance.
@@ -16,6 +18,7 @@ class Unit_Of_MeasuresTestCase(unittest.TestCase):
         self.mock_connection.cursor.return_value = self.mock_cursor
         self.unit_of_measures = unit_of_measures(self.mock_connection)
 
+    """ \test @ref R71_0"""
     def test_get_unit_of_measures(self):
         """
         Test case for the 'get_unit_of_measure' method of the 'unit_of_measure' class.

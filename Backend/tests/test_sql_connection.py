@@ -7,7 +7,9 @@ parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(parent_dir)
 from Backend.sql_connection import SQLConnection
 
+""" \test @ref R6_0"""
 class TestSQLConnection(unittest.TestCase):
+    """ \test @ref R6_0"""
     def setUp(self):
         """
         Set up the test case.
@@ -20,6 +22,7 @@ class TestSQLConnection(unittest.TestCase):
         # Starting the patch and capturing the mocked connect method
         self.mock_connect = self.connection_patch.start()
 
+    """ \test @ref R6_0"""
     def tearDown(self):
         """
         Clean up the test case.
@@ -30,6 +33,7 @@ class TestSQLConnection(unittest.TestCase):
         # Stopping the patch and restoring the original behavior of 'mysql.connector.connect'
         self.connection_patch.stop()
 
+    """ \test @ref R6_0"""
     def test_connect(self):
         """
         Test the connect() method of SQLConnection.
@@ -55,6 +59,7 @@ class TestSQLConnection(unittest.TestCase):
         # Assert that the connection attribute now holds the mock connection
         self.assertEqual(sql_connection.connection, mock_connection)
 
+    """ \test @ref R6_0"""
     def test_close(self):
         """
         Test the close() method of SQLConnection.
@@ -77,6 +82,7 @@ class TestSQLConnection(unittest.TestCase):
         # Assert that the connection attribute of sql_connection is now None
         self.assertIsNone(sql_connection.connection)
 
+    """ \test @ref R6_0"""
     def test_cursor(self):
         """
         Test the cursor() method of SQLConnection.

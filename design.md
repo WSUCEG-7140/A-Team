@@ -20,20 +20,20 @@ This design applies the [Model View Controller](https://en.wikipedia.org/wiki/Mo
 
 The Model consists of the following components:
 
-@anchor R6 https://github.com/WSUCEG-7140/A-Team/blob/main/Backend/products.py
-@anchor R57 https://github.com/WSUCEG-7140/A-Team/blob/main/Backend/orders.py
-@anchor R71 https://github.com/WSUCEG-7140/A-Team/blob/main/Backend/unit_of_measures.py
+@anchor R6_0 https://github.com/WSUCEG-7140/A-Team/blob/main/Backend/products.py<br>
+@anchor R57_0 https://github.com/WSUCEG-7140/A-Team/blob/main/Backend/orders.py<br>
+@anchor R71_0 https://github.com/WSUCEG-7140/A-Team/blob/main/Backend/unit_of_measures.py
 
 
 ## View
-
-
+<br>
+<br>
 
 ## Controller
 
 The Controller consists of the following component:
 
-@anchor R6_server https://github.com/WSUCEG-7140/A-Team/blob/main/Backend/server.py
+@anchor R6_0 https://github.com/WSUCEG-7140/A-Team/blob/main/Backend/server.py
 
 
 
