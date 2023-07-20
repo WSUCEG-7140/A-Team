@@ -34,9 +34,6 @@ jobs:
         pip install pytest-html
         pip install mysql-connector-python
         pip install flask
-        pip install numpy
-        pip install pyparsing==2.4.7
-        pip install PyContracts
 
     - name: Run tests
       # Run pytest to execute tests and generate test results and coverage report
