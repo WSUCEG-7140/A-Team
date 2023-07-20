@@ -1,5 +1,6 @@
 # from contracts import contract, pre, post
 
+""" @ref R71"""
 class unit_of_measures:
     def __init__(self, connection):
         """

@@ -18,7 +18,11 @@ This design applies the [Model View Controller](https://en.wikipedia.org/wiki/Mo
 
 ## Model
 
-@anchor R6 R6 (https://github.com/WSUCEG-7140/A-Team/blob/main/Backend/products.py).
+The Model consists of the following components:
+
+@anchor R6 https://github.com/WSUCEG-7140/A-Team/blob/main/Backend/products.py
+@anchor R57 https://github.com/WSUCEG-7140/A-Team/blob/main/Backend/orders.py
+@anchor R71 https://github.com/WSUCEG-7140/A-Team/blob/main/Backend/unit_of_measures.py
 
 
 ## View
@@ -26,6 +30,12 @@ This design applies the [Model View Controller](https://en.wikipedia.org/wiki/Mo
 
 
 ## Controller
+
+The Controller consists of the following component:
+
+@anchor R6_server https://github.com/WSUCEG-7140/A-Team/blob/main/Backend/server.py
+
+
 
 
 

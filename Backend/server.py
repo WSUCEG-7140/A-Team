@@ -10,6 +10,7 @@ from Backend.orders import Orders
 from Backend.unit_of_measures import unit_of_measures
 # from contracts import contract, pre, post
 
+""" @ref R6_server"""
 class Server:
     def __init__(self):
         """
