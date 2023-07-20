@@ -35,7 +35,7 @@ jobs:
         pip install mysql-connector-python
         pip install flask
         pip install numpy
-        pip install --upgrade pyparsing
+        pip install pyparsing==2.4.7
         pip install PyContracts
 
     - name: Run tests
