@@ -18,7 +18,7 @@ This design applies the [Model View Controller](https://en.wikipedia.org/wiki/Mo
 
 ## Model
 
-@anchor R6 (https://github.com/WSUCEG-7140/A-Team/blob/main/Backend/products.py).
+@anchor R6 R6 (https://github.com/WSUCEG-7140/A-Team/blob/main/Backend/products.py).
 
 
 ## View
