@@ -1,6 +1,7 @@
 # from contracts import contract, pre, post
 
 
+""" @ref R6"""
 class Products:
     def __init__(self, connection):
         """
@@ -12,7 +13,7 @@ class Products:
 
     # @contract
     # @post(lambda result: isinstance(result, list), "The return value must be a list.")
-    """[Issue#6](https://github.com/WSUCEG-7140/A-Team/issues/6)"""
+    """ @ref R6_0"""
     def get_all_products(self):
         """
         Retrieves all products from the database.
