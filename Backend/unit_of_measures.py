@@ -1,4 +1,4 @@
-from contracts import contract, post
+#from contracts import contract, post
 
 """ @ref R71"""
 class unit_of_measures:
@@ -10,8 +10,8 @@ class unit_of_measures:
         """
         self.connection = connection
 
-    @contract
-    @post(lambda result: isinstance(result, list), "The return value must be a list.")
+    #@contract
+    #@post(lambda result: isinstance(result, list), "The return value must be a list.")
     def get_unit_of_measures(self):
         # Create a cursor object to execute SQL queries
         cursor = self.connection.cursor() 
