@@ -6,16 +6,15 @@ from flask import Flask, jsonify
 import json
 import sys
 import os
-
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(parent_dir)
 from Backend.server import Server
 from Backend.products import Products
 from Backend.orders import Orders
-from Backend.unit_of_measures import unit_of_measures
+from Backend.unit_of_measures import UnitOfMeasures
 
 
-# Define a test case class derived from unittest.TestCase
+""" \test @ref R6_0 R7_0 R8_0 R9_0 R10_0 R34_0 R57_0 R58_0 R59_0 R69_0 R71_0 R73_0"""
 class ServerTestCase(unittest.TestCase):
     def setUp(self):
         """
@@ -28,7 +27,7 @@ class ServerTestCase(unittest.TestCase):
         self.mock_connection.cursor.return_value = self.mock_cursor
         self.products = Products(self.mock_connection)
         self.orders = Orders(self.mock_connection)
-        self.unit_of_measures = unit_of_measures(self.mock_connection)
+        self.unit_of_measures = UnitOfMeasures(self.mock_connection)
         self.server.app = self.app
         self.client = self.app.test_client()
 
@@ -94,7 +93,7 @@ class ServerTestCase(unittest.TestCase):
         # 'routes' list.
         self.assertIn('/getUnitOfMeasures', routes)
 
-
+    """ \test @ref R6_0"""
     def test_get_all_products(self):
         """
         Test the get_all_products() method of the server.
@@ -115,6 +114,7 @@ class ServerTestCase(unittest.TestCase):
             self.assertEqual(response.get_json(), mock_response)
             self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
 
+    """ \test @ref R7_0"""
     def test_insert_new_product(self):
         """
         Test the insert_new_product() method of the server.
@@ -140,6 +140,7 @@ class ServerTestCase(unittest.TestCase):
                 self.assertEqual(response.get_json(), {'product_id': mock_product_id})
                 self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
 
+    """ \test @ref R57_0"""
     def test_get_all_orders(self):
         # Mock the response from the orders.get_all_orders method
         mock_response = [{'order_id': 1, 'customer_name': 'Customer 1'}, {'order_id': 2, 'customer_name': 'Customer 2'}]
@@ -154,6 +155,7 @@ class ServerTestCase(unittest.TestCase):
             self.assertEqual(response.get_json(), mock_response)
             self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
 
+    """ \test @ref R59_0"""
     def test_insert_new_order(self):
         """
         Test the insert_new_order() method of the server.
@@ -185,6 +187,7 @@ class ServerTestCase(unittest.TestCase):
                 self.assertEqual(response.get_json(), {'order_id': mock_order_id})
                 self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
 
+    """ \test @ref R9_0"""
     def test_remove_product(self):
         """
         Test the remove_product() route of the server
@@ -213,6 +216,7 @@ class ServerTestCase(unittest.TestCase):
                 self.assertEqual(response.get_json(), expected_response)
                 self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
 
+    """ \test @ref R8_0"""
     def test_update_product_information(self):
         """
         Test the update_product_information() route of the server
@@ -246,6 +250,7 @@ class ServerTestCase(unittest.TestCase):
                     self.assertEqual(response.get_json(), expected_response)
                     self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
 
+    """ \test @ref R34_0"""
     def test_get_sales_report(self):
         """
         Test the get_sales_report() method of the server.
@@ -280,6 +285,7 @@ class ServerTestCase(unittest.TestCase):
                     self.assertEqual(response.get_json(), mock_response)
                     self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
           
+    """ \test @ref R10_0"""
     def test_search_products(self):
         """
         Test the search_products() method of the server.
@@ -312,6 +318,7 @@ class ServerTestCase(unittest.TestCase):
             self.assertEqual(response.get_json(), expected_response.get_json())
             self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
 
+    """ \test @ref R58_0"""
     def test_get_order_by_id(self):
         # Mock the response from the orders.get_order_by_id method
         order_id = 1
@@ -327,6 +334,7 @@ class ServerTestCase(unittest.TestCase):
             self.assertEqual(response.get_json()['order_id'], order_id)
             self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
     
+    """ \test @ref R69_0"""
     def test_remove_order(self):
         """
         Test the remove_order() route of the server.
@@ -356,6 +364,7 @@ class ServerTestCase(unittest.TestCase):
                 self.assertEqual(response.get_json(), expected_response)
                 self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
 
+    """ \test @ref R73_0"""
     def test_update_order_information(self):
         """
         Test the update_order_information() route of the server
@@ -390,6 +399,7 @@ class ServerTestCase(unittest.TestCase):
                     self.assertEqual(response.get_json(), expected_response)
                     self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), '*')
 
+    """ \test @ref R71_0"""
     def test_get_unit_of_measures(self):
         # Mock the response from the unit_of_measures.get_unit_of_measures method
         mock_response = [{'unit_of_measure_id': 1}, {'unit_of_measure_id': 2}]

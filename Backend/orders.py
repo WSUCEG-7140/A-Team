@@ -1,23 +1,29 @@
 from datetime import datetime
-#from sql_connection import SQLConnection
 #from contracts import contract, pre, post
 
+""" @ref R57_0"""
+# This Class is part of the @ref Model within the overall @ref ModelViewController Design.
+# This class implements the methods related to orders.
 class Orders:
     def __init__(self, connection):
         """
-        Constructor for Orders class.
-
+        @brief Constructor for the Orders class.   
+        Initializes an instance of the Orders class with the provided database connection object.
         @param connection: The database connection object.
         """
+
         self.connection = connection
 
     #@contract
     #@post(lambda result: isinstance(result, list))
+    """ @ref R57_0"""
     def get_all_orders(self):
         """
-        Retrieves all orders from the database.
-
-        @return: A list of dictionaries representing the orders.
+        @brief Retrieves all orders from the database.
+        This method retrieves all orders from the "orders" table in the database.
+        @pre The database connection must be established and valid.
+        @return A list of dictionaries representing the orders. Each dictionary contains 'order_id', 'customer_name', 'total_amount', and 'datetime' details for each order.
+        @post The orders_list list is populated with dictionaries representing all orders from the "orders" table.
         """
 
         # Create a cursor object to execute SQL queries
@@ -28,27 +34,30 @@ class Orders:
         # Execute the SQL query using the cursor
         cursor.execute(query)
         # Initialize an empty list to store the query response
-        response = []
+        orders_list = []
         # Iterate over the result set returned by the query and append each row to the response list as a dictionary
         for (order_id, customer_name, total_amount, dt) in cursor:
-            response.append({
+            orders_list.append({
                 'order_id': order_id,
                 'customer_name': customer_name,
                 'total_amount': total_amount,
                 'datetime': dt,
             })
         # Return the response list
-        return response
+        return orders_list
     
     #@contract
     #@pre(lambda order: isinstance(order, dict))
     #@post(lambda result: isinstance(result, int))
+    """ @ref R59_0"""
     def insert_new_order(self, order):
         """
-        Inserts a new order into the database.
-
-        @param order: A dictionary representing the order details.
-        @return: The ID of the newly inserted order.
+        @brief Inserts a new order into the database.
+        This method inserts a new order into the "orders" table in the database along with its associated order details in the "order_details" table.
+        @param order: A dictionary representing the order details. It must contain 'customer_name', 'total_amount', and 'order_details' keys. The 'order_details' key must have a list of dictionaries, each representing an order detail record with 'product_id', 'quantity', and 'total_price' keys.
+        @pre The database connection must be established and valid.
+        @return The ID of the newly inserted order.
+        @post A new order and its associated order details are inserted into the "orders" and "order_details" tables respectively. The 'order_id' of the new order is returned.
         """
 
         # Create a cursor object to execute SQL queries
@@ -88,14 +97,18 @@ class Orders:
     
     #@contract
     #@pre(lambda order: isinstance(order, dict))
-    #@post(lambda result: isinstance(result, int))
+    #@post(lambda result: isinstance(result, dict))
+    """ @ref R58_0"""
     def get_order_by_id(self, order_id):
         """
-        Retrieves an order from the database by its order ID.
-
+        @brief Retrieves an order from the database by its order ID.
+        This method retrieves a specific order from the "orders" table in the database based on the provided order_id.
         @param order_id: The ID of the order to retrieve.
-        @return: A dictionary representing the order.
+        @pre The database connection must be established and valid.
+        @return A dictionary representing the order. The dictionary contains 'order_id', 'customer_name', 'total_amount', and 'datetime' details for the specified order.
+        @post The order dictionary is populated with the details of the order retrieved from the "orders" table based on the provided order_id.
         """
+
         # Create a cursor object to execute SQL queries
         cursor = self.connection.cursor()
         # SQL query to retrieve a specific order by its ID
@@ -107,31 +120,29 @@ class Orders:
         # Fetch the first row returned by the query
         result = cursor.fetchone()
 
-        if result:
-            # Create a dictionary representing the order
-            order = {
-                'order_id': result[0],
-                'customer_name': result[1],
-                'total_amount': result[2],
-                'datetime': result[3],
-            }
-            return order
-        else:
-            return None
+        # Create a dictionary representing the order
+        order = {
+            'order_id': result[0],
+            'customer_name': result[1],
+            'total_amount': result[2],
+            'datetime': result[3],
+        }
+        return order
     
     #@contract
     #@pre(lambda order: isinstance(order, dict))
     #@post(lambda result: isinstance(result, int))
+    """ @ref R69_0"""
     def delete_order(self, order_id):
         """
-        Delete an order from the database.
-
-        Args:
-            order_id (int): The ID of the order to be deleted.
-
-        Returns:
-            bool: True if the order was successfully deleted, False otherwise.
+        @brief Delete an order from the database.
+        This method deletes a specific order from the "orders" table in the database based on the provided order_id.
+        @param order_id (int): The ID of the order to be deleted.
+        @pre The database connection must be established and valid.
+        @return bool: True if the order was successfully deleted, False otherwise.
+        @post The order with the given order_id is deleted from the "orders" table. If the order exists and is deleted successfully, the method returns True. Otherwise, it returns False.
         """
+        
         # Create a cursor object to execute SQL queries
         cursor = self.connection.cursor()
 
@@ -147,7 +158,7 @@ class Orders:
 
         # Get the affected row count, returns a positive number if deleted, else returns 0 if order with order_id is not found
         row_count = cursor.rowcount
-        result = row_count > 0
+        is_order_deleted = row_count > 0
 
         # Enable foreign key checks
         enable_fk_query = "SET FOREIGN_KEY_CHECKS = 1"
@@ -156,22 +167,23 @@ class Orders:
         # Commit the changes to the database
         self.connection.commit()
 
-        return result
+        return is_order_deleted
     
     #@contract
     #@pre(lambda order: isinstance(order, dict))
     #@post(lambda result: isinstance(result, int))
+    """ @ref R73_0"""
     def update_order_details(self, order_id, updated_amount):
         """
-        Update the amount of an order in the database.
-
-        Args:
-            order_id (int): The ID of the order to update.
-            updated_amount (float): The updated amount of the order.
-
-        Returns:
-            bool: A boolean value indicating whether the update is successful.
+        @brief Update the amount of an order in the database.
+        This method updates the amount of a specific order in the "orders" table based on the provided order_id.
+        @param order_id (int): The ID of the order to update.
+        @param updated_amount (float): The updated amount of the order.
+        @pre The database connection must be established and valid.
+        @return bool: A boolean value indicating whether the update is successful. Returns True if the order's amount is successfully updated, False otherwise.
+        @post The amount of the order with the given order_id is updated in the "orders" table. If the order with the specified order_id exists and the amount is successfully updated, the method returns True. Otherwise, it returns False.
         """
+        
         # Create a cursor object to execute SQL queries
         cursor = self.connection.cursor()
 
@@ -189,24 +201,10 @@ class Orders:
         row_count = cursor.rowcount
 
         # Assign the boolean result
-        result = True if row_count > 0 else False
+        is_update_successful = True if row_count > 0 else False
 
         # Returns True if successful else False
-        return result
-
-
-# def main():
-#     """
-#     Entry point of the program.
-#     """
-#     connection = SQLConnection()
-#     connection = connection.connect()
-
-#     orders = Orders(connection)
-#     orders.get_all_orders()
-
-# if __name__ == '__main__':
-#     main()
+        return is_update_successful
 
 
 

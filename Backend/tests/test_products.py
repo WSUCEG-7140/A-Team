@@ -6,7 +6,7 @@ parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(parent_dir)
 from Backend.products import Products
 
-
+""" \test @ref R6_0 R7_0 R8_0 R9_0 R10_0 R34_0"""
 class TestProducts(unittest.TestCase):
     def setUp(self):
         """
@@ -19,6 +19,7 @@ class TestProducts(unittest.TestCase):
         self.mock_connection.cursor.return_value = self.mock_cursor
         self.products = Products(self.mock_connection)
 
+    """ \test @ref R6_0"""
     def test_get_all_products(self):
         """
         Test the get_all_products() method of Products.
@@ -64,6 +65,7 @@ class TestProducts(unittest.TestCase):
             "products.unit_of_measure_id=unit_of_measures.unit_of_measure_id"
         )
 
+    """ \test @ref R7_0"""
     def test_insert_new_product(self):
         """
         Test the insert_new_product() method of Products.
@@ -93,6 +95,7 @@ class TestProducts(unittest.TestCase):
         )
         self.mock_connection.commit.assert_called_once()
 
+    """ \test @ref R9_0"""
     def test_delete_product(self):
         """
         Test the delete_product() method of Products.
@@ -111,7 +114,7 @@ class TestProducts(unittest.TestCase):
         self.mock_cursor.execute.assert_any_call("SET FOREIGN_KEY_CHECKS = 1")
         self.mock_connection.commit.assert_called_once()
 
-
+    """ \test @ref R8_0"""
     def test_update_product_details(self):
         """
         Test the update_product_details() method of Products.
@@ -132,6 +135,7 @@ class TestProducts(unittest.TestCase):
         self.mock_cursor.execute.assert_called_once_with(expected_query, (10, 1))
         self.mock_connection.commit.assert_called_once()
 
+    """ \test @ref R34_0"""
     def test_total_sales(self):
         """
         Test the total_sales() method.
@@ -164,6 +168,7 @@ class TestProducts(unittest.TestCase):
                 "WHERE datetime BETWEEN %s AND %s GROUP BY order_id, customer_name")
         self.mock_cursor.execute.assert_called_once_with(expected_query, ('2023-05-20', '2023-05-25'))
 
+    """ \test @ref R34_0"""
     def test_top_selling_products(self):
         """
         Test the top_selling_products() method of the Products class.
@@ -201,6 +206,7 @@ class TestProducts(unittest.TestCase):
         )
         self.mock_cursor.execute.assert_called_once_with(expected_query, ('2023-05-20', '2023-05-25'))
 
+    """ \test @ref R34_0"""
     def test_sales_by_category(self):
         """
         Test the sales_by_category() method of the Products class.
@@ -238,6 +244,7 @@ class TestProducts(unittest.TestCase):
         )
         self.mock_cursor.execute.assert_called_once_with(expected_query, ('2023-05-20', '2023-05-25'))
 
+    """ \test @ref R10_0"""
     def test_search_products(self):
         """
         Test the search_products() method of Products.
