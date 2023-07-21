@@ -4,7 +4,7 @@ import sys
 import os
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(parent_dir)
-from Backend.unit_of_measures import unit_of_measures
+from Backend.unit_of_measures import UnitOfMeasures
 
 """ \test @ref R71_0"""
 class Unit_Of_MeasuresTestCase(unittest.TestCase):
@@ -16,7 +16,7 @@ class Unit_Of_MeasuresTestCase(unittest.TestCase):
         self.mock_cursor = MagicMock()
         self.mock_connection = MagicMock()
         self.mock_connection.cursor.return_value = self.mock_cursor
-        self.unit_of_measures = unit_of_measures(self.mock_connection)
+        self.unit_of_measures = UnitOfMeasures(self.mock_connection)
 
     """ \test @ref R71_0"""
     def test_get_unit_of_measures(self):
