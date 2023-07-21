@@ -1,6 +1,6 @@
 # Design
 
-This design documents how the A-Team's Grocery Store Managment System project implements the following @ref Requirements.
+This design documents shows how the A-Team's Grocery Store Managment System project implements the following @ref Requirements.
 
 @section Project Project Overview
 
