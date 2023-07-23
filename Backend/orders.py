@@ -1,11 +1,12 @@
 from datetime import datetime
+from typing import Any
 #from contracts import contract, pre, post
 
 """ @ref R57_0"""
 # This Class is part of the @ref Model within the overall @ref ModelViewController Design.
 # This class implements the methods related to orders.
 class Orders:
-    def __init__(self, connection):
+    def __init__(self, connection) -> None:
         """
         @brief Constructor for the Orders class.   
         Initializes an instance of the Orders class with the provided database connection object.
@@ -17,7 +18,7 @@ class Orders:
     #@contract
     #@post(lambda result: isinstance(result, list))
     """ @ref R57_0"""
-    def get_all_orders(self):
+    def get_all_orders(self) -> list:
         """
         @brief Retrieves all orders from the database.
         This method retrieves all orders from the "orders" table in the database.
@@ -50,7 +51,7 @@ class Orders:
     #@pre(lambda order: isinstance(order, dict))
     #@post(lambda result: isinstance(result, int))
     """ @ref R59_0"""
-    def insert_new_order(self, order):
+    def insert_new_order(self, order: dict[str, Any]) -> int:
         """
         @brief Inserts a new order into the database.
         This method inserts a new order into the "orders" table in the database along with its associated order details in the "order_details" table.
@@ -99,7 +100,7 @@ class Orders:
     #@pre(lambda order: isinstance(order, dict))
     #@post(lambda result: isinstance(result, dict))
     """ @ref R58_0"""
-    def get_order_by_id(self, order_id):
+    def get_order_by_id(self, order_id: int) -> dict[str, Any]:
         """
         @brief Retrieves an order from the database by its order ID.
         This method retrieves a specific order from the "orders" table in the database based on the provided order_id.
@@ -133,7 +134,7 @@ class Orders:
     #@pre(lambda order: isinstance(order, dict))
     #@post(lambda result: isinstance(result, int))
     """ @ref R69_0"""
-    def delete_order(self, order_id):
+    def delete_order(self, order_id: int) -> bool:
         """
         @brief Delete an order from the database.
         This method deletes a specific order from the "orders" table in the database based on the provided order_id.
@@ -173,7 +174,7 @@ class Orders:
     #@pre(lambda order: isinstance(order, dict))
     #@post(lambda result: isinstance(result, int))
     """ @ref R73_0"""
-    def update_order_details(self, order_id, updated_amount):
+    def update_order_details(self, order_id: int, updated_amount: float) -> bool:
         """
         @brief Update the amount of an order in the database.
         This method updates the amount of a specific order in the "orders" table based on the provided order_id.

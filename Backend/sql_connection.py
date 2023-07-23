@@ -1,3 +1,4 @@
+from typing import Any
 import mysql.connector
 #from contracts import contract, pre, post
 
@@ -5,14 +6,14 @@ import mysql.connector
 # This Class is part of the @ref Model within the overall @ref ModelViewController Design.
 # This Class implements methods for managing a MySQL database connection, including connecting, closing, and retrieving a cursor object for executing SQL queries.
 class SQLConnection:
-    def __init__(self):
+    def __init__(self) -> None:
         self.connection = None
 
     #@contract
     #@pre(lambda self: self.connection is None, "Connection must not be already established.")
     #@post(lambda self, result: self.connection is not None and result is self.connection,
         # "Connection must be established and returned.")
-    def connect(self):
+    def connect(self) -> Any:
         """
         @brief Establishes a connection to the MySQL database using the provided credentials.
         @pre The database connection must not be established or must be closed.
@@ -30,7 +31,7 @@ class SQLConnection:
     #@contract
     #@pre(lambda self: self.connection is not None, "Connection must be established.")
     #@post(lambda self: self.connection is None, "Connection must be closed.")
-    def close(self):
+    def close(self) -> None:
         """
         @brief Closes the existing MySQL connection if it is open. 
         @pre The database connection must be established and open.
@@ -44,7 +45,7 @@ class SQLConnection:
     # @contract
     # @post(lambda result: isinstance(result, mysql.connector.cursor.MySQLCursor),
     #       "The return value must be a MySQLCursor object.")
-    def cursor(self):
+    def cursor(self) -> Any:
         """
         @brief Returns the cursor object to execute SQL queries.
         If the connection is not established, this method first establishes the connection.
