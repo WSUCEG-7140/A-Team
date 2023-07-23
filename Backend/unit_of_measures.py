@@ -4,7 +4,7 @@
 # This Class is part of the @ref Model within the overall @ref ModelViewController Design.
 # This class implements the methods related to unit of measures.
 class UnitOfMeasures:
-    def __init__(self, connection):
+    def __init__(self, connection) -> None:
         """
         @brief Constructor for the UnitOfMeasures class.   
         Initializes an instance of the UnitOfMeasures class with the provided database connection object.
@@ -16,7 +16,7 @@ class UnitOfMeasures:
     #@contract
     #@post(lambda result: isinstance(result, list), "The return value must be a list.")
     """ @ref R71_0"""
-    def get_unit_of_measures(self):
+    def get_unit_of_measures(self) -> list:
         """
         @brief Retrieves a list of unit of measures from the database.
         This method executes an SQL query to retrieve all unit of measures from the database table "unit_of_measures".

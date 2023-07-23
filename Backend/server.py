@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 import sys
 import os
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -15,7 +15,7 @@ from Backend.unit_of_measures import UnitOfMeasures
 # This class implements API endpoints for methods related to orders, products, unit_of_measures.
 class Server:
     """ @ref R6_0"""
-    def __init__(self):
+    def __init__(self) -> None:
         """
         @brief Initializes the Server class.
         """
@@ -26,7 +26,7 @@ class Server:
         self.unit_of_measures = UnitOfMeasures(self.connection) # Creates an instance of the unit_of_measure class with the SQL connection
 
     """ @ref R6_0"""
-    def run(self):
+    def run(self) -> None:
         """
         @brief Runs the Flask application.
         """
@@ -35,7 +35,7 @@ class Server:
     # @contract
     # @post(lambda result: isinstance(result, Flask.Response), "The return value must be a Flask Response object.")
     """ @ref R6_0"""
-    def get_all_products(self):
+    def get_all_products(self) -> Response:
         """
         @brief Retrieves all products from the database.
         @pre The database connection must be established and valid.
@@ -51,7 +51,7 @@ class Server:
     # @contract
     # @post(lambda result: isinstance(result, Flask.Response), "The return value must be a Flask Response object.")
     """ @ref R7_0"""
-    def insert_new_product(self):
+    def insert_new_product(self) -> Response:
         """
         @brief Inserts a new product into the database.
         @pre The database connection must be established and valid.
@@ -68,7 +68,7 @@ class Server:
     # @contract
     # @post(lambda result: isinstance(result, Flask.Response), "The return value must be a Flask Response object.")
     """ @ref R57_0"""
-    def get_all_orders(self):
+    def get_all_orders(self) -> Response:
         """
         @brief Retrieves all orders from the database.
         @pre The database connection must be established and valid.
@@ -84,7 +84,7 @@ class Server:
     # @contract
     # @post(lambda result: isinstance(result, Flask.Response), "The return value must be a Flask Response object.")
     """ @ref R59_0"""
-    def insert_new_order(self):
+    def insert_new_order(self) -> Response:
         """
         @brief Inserts a new order into the database.
         @pre The database connection must be established and valid.
@@ -101,7 +101,7 @@ class Server:
     # @contract
     # @post(lambda result: isinstance(result, Flask.Response), "The return value must be a Flask Response object.")
     """ @ref R9_0"""
-    def remove_product(self, product_id):
+    def remove_product(self, product_id: int) -> Response:
         """
         @brief Remove a specific product from the database.
         @param product_id: The ID of the product to be removed from the database.
@@ -122,7 +122,7 @@ class Server:
     # @contract
     # @post(lambda result: isinstance(result, Flask.Response), "The return value must be a Flask Response object.")
     """ @ref R8_0"""
-    def update_product_information(self, product_id):
+    def update_product_information(self, product_id: int) -> Response:
         """
         @brief Update existing product information in the database.
         @param product_id: The ID of the product to be updated with the new price details.
@@ -143,7 +143,7 @@ class Server:
     # @contract
     # @post(lambda result: isinstance(result, Flask.Response), "The return value must be a Flask Response object.")
     """ @ref R34_0"""
-    def get_sales_report(self):
+    def get_sales_report(self) -> Response:
         """
         @brief Retrieves the sales report by report type between the specified dates.
         @pre The database connection must be established and valid.
@@ -168,7 +168,7 @@ class Server:
     # @contract
     # @post(lambda result: isinstance(result, Flask.Response), "The return value must be a Flask Response object.")
     """ @ref R10_0"""
-    def search_products(self):
+    def search_products(self) -> Response:
         """
         @brief Search for a product name in the database.
         @pre The database connection must be established and valid.
@@ -185,7 +185,7 @@ class Server:
     # @contract
     # @post(lambda result: isinstance(result, Flask.Response), "The return value must be a Flask Response object.")
     """ @ref R58_0"""
-    def get_order_by_id(self, order_id):
+    def get_order_by_id(self, order_id: int) -> Response:
         """
         @brief Retrieves an order from the database by its ID.
         @param order_id (int): The ID of the order to retrieve.
@@ -202,7 +202,7 @@ class Server:
     # @contract
     # @post(lambda result: isinstance(result, Flask.Response), "The return value must be a Flask Response object.")
     """ @ref R73_0"""
-    def update_order_information(self, order_id):
+    def update_order_information(self, order_id: int) -> Response:
         """
         @brief Update existing order information in the database.
         @param order_id: The ID of the order to be updated with the new amount details.
@@ -223,7 +223,7 @@ class Server:
     # @contract
     # @post(lambda result: isinstance(result, Flask.Response), "The return value must be a Flask Response object.")
     """ @ref R69_0"""
-    def remove_order(self, order_id):
+    def remove_order(self, order_id: int) -> Response:
         """
         @brief Remove a specific order from the database.
         @param order_id: The ID of the order to be removed from the database.
@@ -243,7 +243,7 @@ class Server:
     # @contract
     # @post(lambda result: isinstance(result, Flask.Response), "The return value must be a Flask Response object.")
     """ @ref R71_0"""
-    def get_unit_of_measures(self):
+    def get_unit_of_measures(self) -> Response:
         """
         @brief Retrieves all unit_of_measures from the database.
         @pre The database connection must be established and valid.
@@ -257,7 +257,7 @@ class Server:
         return json_response
     
     """ @ref R6_0"""
-    def setup_routes(self):
+    def setup_routes(self) -> None:
         """
         @brief Sets up the routes for the Flask application.
         """

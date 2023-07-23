@@ -3,8 +3,12 @@
 """ @ref R6_0"""
 # This Class is part of the @ref Model within the overall @ref ModelViewController Design.
 # This class implements the methods related to products.
+from datetime import date
+from typing import Any
+
+
 class Products:
-    def __init__(self, connection):
+    def __init__(self, connection) -> None:
         """
         @brief Constructor for the Products class.   
         Initializes an instance of the Products class with the provided database connection object.
@@ -16,7 +20,7 @@ class Products:
     # @contract
     # @post(lambda result: isinstance(result, list), "The return value must be a list.")
     """ @ref R6_0"""
-    def get_all_products(self):
+    def get_all_products(self) -> list:
         """
         @brief Retrieves all products from the database.
         This method executes an SQL query to select specific columns from two tables using an INNER JOIN and retrieves all products along with their associated unit of measures from the database.
@@ -50,7 +54,7 @@ class Products:
     # @pre(lambda product: isinstance(product, dict), "The product must be a dictionary.")
     # @post(lambda result: isinstance(result, int), "The return value must be an integer.")
     """ @ref R7_0"""
-    def insert_new_product(self, product):
+    def insert_new_product(self, product: dict[str, Any]) -> int:
         """
         @brief Inserts a new product into the database.
         This method inserts a new product into the 'products' table of the database using the provided product information.
@@ -80,7 +84,7 @@ class Products:
     # @pre(lambda product_id: isinstance(product_id, int), "The product_id must be an integer.")
     # @post(lambda result: isinstance(result, bool), "The return value must be an Boolean.")
     """ @ref R9_0"""
-    def delete_product(self, product_id):
+    def delete_product(self, product_id: int) -> bool:
         """
         @brief Deletes a product from the database.
         This method deletes a product from the 'products' table of the database based on the provided product_id.
@@ -118,7 +122,7 @@ class Products:
     # @pre(lambda updated_price: isinstance(updated_price, double), "The product_id must be double.")
     # @post(lambda result: isinstance(result, bool), "The return value must be an Boolean.")
     """ @ref R8_0"""
-    def update_product_details(self,  product_id, updated_price):
+    def update_product_details(self,  product_id: int, updated_price: float) -> bool:
         """
         @brief Update details of a product in the database.
         This method updates the price of a product in the 'products' table of the database based on the provided product_id.
@@ -151,7 +155,7 @@ class Products:
     # @pre: start_date and end_date must be strings.
     # @post: The return value must be a dictionary containing the total sales report.
     """ @ref R34_0"""
-    def total_sales(self, start_date, end_date):
+    def total_sales(self, start_date: date, end_date: date) -> list[dict[str, Any]]:
         """
         @brief Generate a total sales report between the specified dates.
         This method generates a total sales report for orders placed between the specified start_date and end_date.
@@ -188,7 +192,7 @@ class Products:
     # @pre: start_date and end_date must be strings.
     # @post: The return value must be a dictionary containing the top selling products.
     """ @ref R34_0"""
-    def top_selling_products(self, start_date, end_date):
+    def top_selling_products(self, start_date: date, end_date: date) -> list[dict[str, Any]]:
         """
         @brief Generate a list of top selling products between the specified dates.
         This method generates a list of top selling products based on the quantity of products sold between the specified start_date and end_date.
@@ -227,7 +231,7 @@ class Products:
     # @pre: start_date and end_date must be strings.
     # @post: The return value must be a dictionary containing the sales by category.
     """ @ref R34_0"""
-    def sales_by_category(self, start_date, end_date):
+    def sales_by_category(self, start_date: date, end_date: date) -> list[dict[str, Any]]:
         """
         @brief Generate a sales report by category between the specified dates.
         This method generates a sales report by category based on the total sales (total_price) of products in each category between the specified start_date and end_date.
@@ -266,7 +270,7 @@ class Products:
     # @pre: product_name must be a string.
     # @post: The return value must be a dictionary representing the product found, or None if not found.
     """ @ref R10_0"""
-    def search_products(self, product_name):
+    def search_products(self, product_name: str) -> dict[str, Any]:
         """
         @brief Retrieves a specific product from the database based on the provided product name.
         This method searches for a product in the 'products' table of the database with the given product name.
