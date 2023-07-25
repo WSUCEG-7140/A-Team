@@ -24,6 +24,16 @@ I have completed Issue #38, which involved adding a new table to the initial dat
 Mousami Khadilkar:
 Working on issue number 10, API endpoint for searching products from the database. For this issue I will be writing the test cases for ensuring the proper functionality of the endpoint and after the completion of issue number 10 I will continue with issue number 11.
 
+## Decisions Made:
+
+During the meeting, the team made the following decisions:
+
+Vidhi Sheth is assigned to work on Issue#6, which is about Creating an API endpoint for retrieving all the products.
+
+Anuhya Akkineni is assigned to work on Issue#34, which is about implementing an API for generating sales report by report type between specific dates.
+
+Mousami Khadilkar is assigned to work on Issue#58, which is about creating an API endpoints to retrieve order through order id.
+
 ## Additional Notes:
 NONE
 

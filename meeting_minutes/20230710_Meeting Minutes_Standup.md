@@ -24,6 +24,16 @@ I have completed working on Issue 8 for implementing API to update the details o
 Mousami Khadilkar:
 I have completed working on Issue 71 API endpoints for retrieving unit of measure and completed it . I also completed the issue 73 API endpoints for updating the details of existing order in the database and checked the functionality.
 
+## Decisions Made:
+
+During the meeting, the team made the following decisions:
+
+Vidhi Sheth is assigned to work on Issue#59, which is about creating an API endpoint for adding new order.
+
+Anuhya Akkineni is assigned to work on Issue#76, which involves enhancing SQL functionality.
+
+Mousami Khadilkar is assigned to work on Issue#71, which is about creating an API endpoint for retrieving unit of measure.
+
 ## Additional Notes:
 NONE
 
