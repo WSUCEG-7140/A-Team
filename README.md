@@ -7,7 +7,7 @@
 
 3.	Mousami Khadilkar        (Github UserName: MousamiKhadilkar)
 
-We have covered Both Approaches (Programming By Contract and Literate Programming) in below files:
+We have covered Programming By Contract and Literate Programming in below files:
 
 https://github.com/WSUCEG-7140/A-Team/blob/main/design.md  (Project Design)
 
