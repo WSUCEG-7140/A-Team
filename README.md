@@ -9,11 +9,16 @@
 
 We have covered Both Approaches (Programming By Contract and Literate Programming) in below files:
 
-https://github.com/WSUCEG-7140/A-Team/blob/main/design.md  (Design of Project)
+https://github.com/WSUCEG-7140/A-Team/blob/main/design.md  (Project Design)
+
 https://github.com/WSUCEG-7140/A-Team/blob/main/requirements.md  (linked Issues)
+
 https://github.com/WSUCEG-7140/A-Team/blob/main/Backend/products.py
+
 https://github.com/WSUCEG-7140/A-Team/blob/main/Backend/orders.py
+
 https://github.com/WSUCEG-7140/A-Team/blob/main/Backend/unit_of_measures.py
+
 https://github.com/WSUCEG-7140/A-Team/blob/main/Backend/server.py
 
 # Grocery Store Management System
