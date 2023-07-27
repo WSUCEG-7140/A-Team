@@ -1,14 +1,11 @@
 
 # Team Members:
 
-1.	Vidhi Tusharbhai Sheth 
-    Github UserName: VidhiS07
+1.	Vidhi Tusharbhai Sheth   (Github UserName: VidhiS07)
 
-2.	Anuhya Akkineni
-    Github UserName: aanuhya31
+2.	Anuhya Akkineni          (Github UserName: aanuhya31)
 
-3.	Mousami Khadilkar
-    Github UserName: MousamiKhadilkar
+3.	Mousami Khadilkar        (Github UserName: MousamiKhadilkar)
 
 We have covered Both Approaches (Programming By Contract and Literate Programming) in below files:
 
