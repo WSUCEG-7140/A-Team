@@ -21,6 +21,12 @@ https://github.com/WSUCEG-7140/A-Team/blob/main/Backend/unit_of_measures.py
 
 https://github.com/WSUCEG-7140/A-Team/blob/main/Backend/server.py
 
+# Test Coverage Report and Documentation
+
+Test Coverage report and the doxygen documentation are available at the below link; Click the link & scroll down to locate them. 
+
+https://github.com/WSUCEG-7140/A-Team/actions/runs/5657464407
+
 # Grocery Store Management System
 
 Grocery Store Management System developed using Python and MySQL. This system helps manage order details and product details in a grocery store.
