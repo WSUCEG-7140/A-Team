@@ -25,7 +25,7 @@ https://github.com/WSUCEG-7140/A-Team/blob/main/Backend/server.py
 
 # Test Coverage Report and Doxygen Documentation
 
-Test Coverage report and the doxygen documentation are available at the below link; Click the link & scroll down to locate them. 
+Test Coverage report and the doxygen documentation are available at the below link; Click the link & scroll down to locate them. After downloading these files, you can launch index.html from both to review their contents.
 
 https://github.com/WSUCEG-7140/A-Team/actions/runs/5657464407
 
